@@ -1,460 +1,180 @@
-import { useState } from "react";
-import { ArrowRight, Play } from "lucide-react";
+import { Music } from "lucide-react";
 
-const MAIN_PHOTO =
-  "https://images.unsplash.com/photo-1507838153414-b4b713384a76?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080";
-const SECONDARY_PHOTO =
-  "https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600";
+const BACKGROUND_IMAGE =
+  "https://images.unsplash.com/photo-1507838153414-b4b713384a76?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1920";
 
 export function HeroSection() {
-  const [hoverMain, setHoverMain] = useState(false);
-  const [hoverSub, setHoverSub] = useState(false);
-
   return (
     <section
       id="hero"
       style={{
-        backgroundColor: "#FDFCF8",
+        position: "relative",
         minHeight: "100vh",
         display: "flex",
         alignItems: "center",
-        padding: "120px 40px 80px",
-        position: "relative",
+        justifyContent: "flex-start",
+        backgroundImage: `url(${BACKGROUND_IMAGE})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundAttachment: "fixed",
+        padding: "0 8%",
         overflow: "hidden",
       }}
     >
-      {/* Subtle background texture */}
+      {/* Black Gradient Overlay */}
       <div
         style={{
           position: "absolute",
           inset: 0,
-          backgroundImage:
-            "radial-gradient(ellipse at 75% 50%, rgba(27,122,99,0.06) 0%, transparent 65%)",
+          background: "linear-gradient(to right, rgba(10, 10, 10, 0.94) 0%, rgba(10, 10, 10, 0.88) 35%, rgba(10, 10, 10, 0.45) 75%, rgba(10, 10, 10, 0.25) 100%)",
+          zIndex: 1,
           pointerEvents: "none",
         }}
       />
-      {/* Top-left accent dot cluster */}
+
+      {/* Main Content Area */}
+      <div
+        style={{
+          position: "relative",
+          zIndex: 2,
+          maxWidth: 800,
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+          color: "#FFFFFF",
+          marginTop: 40,
+        }}
+      >
+        {/* Subtitle / Category */}
+        <span
+          style={{
+            fontFamily: "Pretendard, -apple-system, sans-serif",
+            fontWeight: 300,
+            fontSize: 14,
+            color: "rgba(255, 255, 255, 0.8)",
+            letterSpacing: "8px",
+            textTransform: "uppercase",
+            marginBottom: 16,
+            paddingLeft: 4,
+          }}
+        >
+          PIANO & STRINGS ENSEMBLE
+        </span>
+
+        {/* Thin Gold/White line */}
+        <div
+          style={{
+            width: "100%",
+            maxWidth: 360,
+            height: 1,
+            background: "linear-gradient(to right, rgba(242, 175, 41, 0.6) 0%, rgba(255, 255, 255, 0.1) 100%)",
+            marginBottom: 36,
+          }}
+        />
+
+        {/* Main Brand Name */}
+        <h2
+          style={{
+            fontFamily: "'Playfair Display', 'Cinzel', 'Noto Serif KR', serif",
+            fontWeight: 800,
+            fontSize: "clamp(46px, 6vw, 80px)",
+            color: "#FFFFFF",
+            lineHeight: 1.1,
+            letterSpacing: "-0.5px",
+            marginBottom: 24,
+            textShadow: "0 4px 20px rgba(0,0,0,0.5)",
+          }}
+        >
+          Budi Ensemble
+        </h2>
+
+        {/* Main copy */}
+        <h1
+          style={{
+            fontFamily: "'Noto Serif KR', 'Pretendard', serif",
+            fontWeight: 400,
+            fontSize: "clamp(24px, 3vw, 38px)",
+            color: "rgba(255, 255, 255, 0.95)",
+            lineHeight: 1.55,
+            letterSpacing: "-0.8px",
+            marginBottom: 36,
+            wordBreak: "keep-all",
+            textShadow: "0 2px 12px rgba(0,0,0,0.4)",
+          }}
+        >
+          부디, 선율로 채워진 <br />아름다운 이야기이기를
+
+        </h1>
+        {/* 뒷 배경으로는 연주하고 있는 사진*/}
+
+        {/* Bottom Sub-info */}
+        <span
+          style={{
+            fontFamily: "'Noto Serif KR', 'Pretendard', serif",
+            fontWeight: 500,
+            fontSize: 16,
+            color: "#F2AF29",
+            letterSpacing: "4px",
+            opacity: 0.95,
+          }}
+        >
+          피아노 & 현악 앙상블
+        </span>
+      </div>
+
+      {/* Subtle Bottom Scroll Indicator */}
       <div
         style={{
           position: "absolute",
-          top: 140,
-          left: 60,
-          width: 180,
-          height: 180,
-          backgroundImage: "radial-gradient(circle, #CCEDE6 1.5px, transparent 1.5px)",
-          backgroundSize: "18px 18px",
-          opacity: 0.6,
-          pointerEvents: "none",
-        }}
-      />
-
-      <div
-        style={{
-          maxWidth: 1200,
-          margin: "0 auto",
-          width: "100%",
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: 80,
+          bottom: 40,
+          left: "50%",
+          transform: "translateX(-50%)",
+          zIndex: 2,
+          display: "flex",
+          flexDirection: "column",
           alignItems: "center",
-          position: "relative",
+          gap: 10,
+          opacity: 0.6,
+          cursor: "pointer",
+          transition: "opacity 0.2s",
         }}
-        className="hero-grid"
+        onClick={() => {
+          const about = document.getElementById("about");
+          if (about) about.scrollIntoView({ behavior: "smooth" });
+        }}
+        onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.95")}
+        onMouseLeave={(e) => (e.currentTarget.style.opacity = "0.6")}
       >
-        {/* ── LEFT COLUMN ── */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
-          {/* Badge */}
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 8,
-              backgroundColor: "#E6F2F0",
-              border: "1px solid #CCEDE6",
-              borderRadius: 100,
-              padding: "7px 16px",
-              marginBottom: 32,
-            }}
-          >
-            <div
-              style={{
-                width: 7,
-                height: 7,
-                borderRadius: "50%",
-                backgroundColor: "#1B7A63",
-              }}
-            />
-            <span
-              style={{
-                fontFamily: "Pretendard, sans-serif",
-                fontWeight: 600,
-                fontSize: 12,
-                color: "#1B7A63",
-                letterSpacing: "1.5px",
-                textTransform: "uppercase",
-              }}
-            >
-              Piano Quintet · 피아노 5중주
-            </span>
-          </div>
-
-          {/* Serif Headline */}
-          <h1
-            style={{
-              fontFamily: "'Noto Serif KR', 'Pretendard', serif",
-              fontWeight: 700,
-              fontSize: "clamp(32px, 3.8vw, 52px)",
-              color: "#2D3436",
-              lineHeight: 1.35,
-              letterSpacing: "-1px",
-              marginBottom: 24,
-              wordBreak: "keep-all",
-            }}
-          >
-            부디, 당신의 간절함이<br />
-            이루어지기를.
-          </h1>
-
-          {/* Accent line */}
-          <div
-            style={{
-              width: 48,
-              height: 3,
-              backgroundColor: "#F2AF29",
-              borderRadius: 2,
-              marginBottom: 24,
-            }}
-          />
-
-          {/* Sub-headline */}
-          <p
-            style={{
-              fontFamily: "Pretendard, sans-serif",
-              fontWeight: 400,
-              fontSize: "clamp(15px, 1.5vw, 17px)",
-              color: "#636e72",
-              lineHeight: 1.8,
-              marginBottom: 20,
-              wordBreak: "keep-all",
-            }}
-          >
-            간절한 마음을 담아 위로를 전하는 피아노 5중주,
-            <br />
-            <strong style={{ fontWeight: 600, color: "#2D3436" }}>Budi Ensemble</strong>
-          </p>
-
-          {/* Stats line */}
-          <p
-            style={{
-              fontFamily: "Pretendard, sans-serif",
-              fontWeight: 500,
-              fontSize: 14,
-              color: "#1B7A63",
-              lineHeight: 1.7,
-              marginBottom: 40,
-              wordBreak: "keep-all",
-            }}
-          >
-            전국 200회 이상의 무대에서 관객들과 깊은 공명을 나누었습니다.
-          </p>
-
-          {/* CTA Buttons */}
-          <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
-            <a
-              href="#contact"
-              style={{
-                fontFamily: "Pretendard, sans-serif",
-                fontWeight: 700,
-                fontSize: 15,
-                color: "#05261D",
-                backgroundColor: "#F2AF29",
-                padding: "14px 32px",
-                borderRadius: 10,
-                textDecoration: "none",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 8,
-                boxShadow: "0 6px 24px rgba(242,175,41,0.35)",
-                transition: "transform 0.2s, box-shadow 0.2s",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-2px)";
-                (e.currentTarget as HTMLAnchorElement).style.boxShadow =
-                  "0 10px 32px rgba(242,175,41,0.45)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(0)";
-                (e.currentTarget as HTMLAnchorElement).style.boxShadow =
-                  "0 6px 24px rgba(242,175,41,0.35)";
-              }}
-            >
-              공연 섭외 문의
-              <ArrowRight size={16} />
-            </a>
-            <a
-              href="#portfolio"
-              style={{
-                fontFamily: "Pretendard, sans-serif",
-                fontWeight: 600,
-                fontSize: 15,
-                color: "#2D3436",
-                backgroundColor: "transparent",
-                border: "1.5px solid #CCEDE6",
-                padding: "14px 28px",
-                borderRadius: 10,
-                textDecoration: "none",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 8,
-                transition: "border-color 0.2s, color 0.2s",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.borderColor = "#1B7A63";
-                (e.currentTarget as HTMLAnchorElement).style.color = "#1B7A63";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.borderColor = "#CCEDE6";
-                (e.currentTarget as HTMLAnchorElement).style.color = "#2D3436";
-              }}
-            >
-              <Play size={14} fill="#1B7A63" color="#1B7A63" />
-              공연 이력 보기
-            </a>
-          </div>
-
-          {/* Trust badges */}
-          <div
-            style={{
-              display: "flex",
-              gap: 24,
-              marginTop: 52,
-              paddingTop: 32,
-              borderTop: "1px solid #E6F2F0",
-              width: "100%",
-            }}
-          >
-            {[
-              { num: "200+", label: "전국 공연" },
-              { num: "50+", label: "기업 파트너" },
-              { num: "15+", label: "방송 출연" },
-            ].map((s) => (
-              <div key={s.label}>
-                <div
-                  style={{
-                    fontFamily: "Pretendard, sans-serif",
-                    fontWeight: 800,
-                    fontSize: 26,
-                    color: "#1B7A63",
-                    lineHeight: 1,
-                  }}
-                >
-                  {s.num}
-                </div>
-                <div
-                  style={{
-                    fontFamily: "Pretendard, sans-serif",
-                    fontWeight: 400,
-                    fontSize: 12,
-                    color: "#95a5a6",
-                    marginTop: 5,
-                  }}
-                >
-                  {s.label}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* ── RIGHT COLUMN — Floating Frame Gallery ── */}
+        <span style={{ fontSize: 11, letterSpacing: "2px", textTransform: "uppercase", color: "#FFFFFF" }}>Scroll</span>
         <div
           style={{
+            width: 1,
+            height: 40,
+            backgroundColor: "rgba(255, 255, 255, 0.3)",
             position: "relative",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            /* Reserve height so the overlapping secondary frame doesn't clip */
-            paddingBottom: 60,
-            paddingLeft: 20,
+            overflow: "hidden",
           }}
         >
-          {/* Decorative ring behind main frame */}
           <div
             style={{
               position: "absolute",
-              top: -20,
-              right: -20,
-              width: "90%",
-              aspectRatio: "3/4",
-              border: "1.5px dashed #CCEDE6",
-              borderRadius: 28,
-              zIndex: 0,
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "40%",
+              backgroundColor: "#F2AF29",
+              animation: "scrollDown 2s infinite ease-in-out",
             }}
           />
-
-          {/* ── Main Frame ── */}
-          <div
-            onMouseEnter={() => setHoverMain(true)}
-            onMouseLeave={() => setHoverMain(false)}
-            style={{
-              position: "relative",
-              zIndex: 1,
-              width: "100%",
-              maxWidth: 480,
-              aspectRatio: "3/4",
-              borderRadius: 24,
-              overflow: "hidden",
-              boxShadow: hoverMain
-                ? "0 28px 75px rgba(10,64,48,0.25), 0 12px 36px rgba(10,64,48,0.15)"
-                : "0 20px 60px rgba(10,64,48,0.18), 0 8px 24px rgba(10,64,48,0.10)",
-              border: "4px solid #FFFFFF",
-              transform: hoverMain ? "translateY(-6px) scale(1.01)" : "translateY(0) scale(1)",
-              transition: "transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease",
-            }}
-          >
-            <img
-              src={MAIN_PHOTO}
-              alt="Budi Ensemble 공연 사진"
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                display: "block",
-                transform: hoverMain ? "scale(1.05)" : "scale(1)",
-                transition: "transform 0.6s ease",
-              }}
-            />
-            {/* Subtle inner vignette */}
-            <div
-              style={{
-                position: "absolute",
-                inset: 0,
-                background:
-                  "linear-gradient(to bottom, rgba(0,0,0,0.0) 55%, rgba(5,38,29,0.35) 100%)",
-                pointerEvents: "none",
-              }}
-            />
-            {/* Ensemble label at bottom of main frame */}
-            <div
-              style={{
-                position: "absolute",
-                bottom: 22,
-                left: 22,
-                right: 22,
-              }}
-            >
-              <div
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 8,
-                  backgroundColor: "rgba(253,252,248,0.92)",
-                  backdropFilter: "blur(8px)",
-                  borderRadius: 10,
-                  padding: "10px 16px",
-                }}
-              >
-                <div
-                  style={{
-                    width: 8,
-                    height: 8,
-                    borderRadius: "50%",
-                    backgroundColor: "#F2AF29",
-                    flexShrink: 0,
-                  }}
-                />
-                <span
-                  style={{
-                    fontFamily: "Pretendard, sans-serif",
-                    fontWeight: 600,
-                    fontSize: 13,
-                    color: "#2D3436",
-                  }}
-                >
-                  Budi Ensemble — 정기 연주회
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* ── Secondary Frame (collage overlap) ── */}
-          <div
-            onMouseEnter={() => setHoverSub(true)}
-            onMouseLeave={() => setHoverSub(false)}
-            style={{
-              position: "absolute",
-              bottom: 0,
-              left: 0,
-              zIndex: 2,
-              width: "48%",
-              aspectRatio: "4/3",
-              borderRadius: 18,
-              overflow: "hidden",
-              boxShadow: hoverSub
-                ? "0 20px 50px rgba(10,64,48,0.3), 0 8px 20px rgba(10,64,48,0.18)"
-                : "0 12px 40px rgba(10,64,48,0.22), 0 4px 12px rgba(10,64,48,0.12)",
-              border: "3px solid #FFFFFF",
-              transform: hoverSub ? "translateY(-6px) scale(1.02) rotate(-1deg)" : "translateY(0) scale(1) rotate(0deg)",
-              transition: "transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease",
-            }}
-          >
-            <img
-              src={SECONDARY_PHOTO}
-              alt="Budi Ensemble 무대"
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                display: "block",
-                transform: hoverSub ? "scale(1.05)" : "scale(1)",
-                transition: "transform 0.6s ease",
-              }}
-            />
-          </div>
-
-          {/* ── Floating badge on secondary frame ── */}
-          <div
-            style={{
-              position: "absolute",
-              bottom: "calc(0% + 9px)",
-              left: "calc(48% - 12px)",
-              zIndex: 3,
-              backgroundColor: "#1B7A63",
-              borderRadius: 12,
-              padding: "10px 14px",
-              boxShadow: "0 4px 16px rgba(10,64,48,0.3)",
-              border: "2px solid #FFFFFF",
-              transform: hoverSub ? "scale(1.05) translateY(-2px)" : "scale(1) translateY(0)",
-              transition: "transform 0.3s ease",
-            }}
-          >
-            <div
-              style={{
-                fontFamily: "Pretendard, sans-serif",
-                fontWeight: 800,
-                fontSize: 17,
-                color: "#F2AF29",
-                lineHeight: 1,
-                textAlign: "center",
-              }}
-            >
-              2015
-            </div>
-            <div
-              style={{
-                fontFamily: "Pretendard, sans-serif",
-                fontWeight: 500,
-                fontSize: 10,
-                color: "rgba(255,255,255,0.8)",
-                textAlign: "center",
-                marginTop: 3,
-                letterSpacing: "0.5px",
-              }}
-            >
-              창단
-            </div>
-          </div>
         </div>
+        <style>{`
+          @keyframes scrollDown {
+            0% { top: -40%; }
+            50% { top: 100%; }
+            100% { top: 100%; }
+          }
+        `}</style>
       </div>
     </section>
   );
