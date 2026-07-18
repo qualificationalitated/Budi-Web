@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Music2, Menu, X } from "lucide-react";
+import { Link, useNavigate, useLocation } from "react-router";
+import { Music2, Menu, X, Sparkles } from "lucide-react";
 
 const navLinks = [
   { label: "소개", href: "#about" },
@@ -12,6 +13,8 @@ const navLinks = [
 export function GNB() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -20,6 +23,29 @@ export function GNB() {
   }, []);
 
   const isDark = scrolled;
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (href.startsWith("#")) {
+      e.preventDefault();
+      const targetId = href.substring(1);
+      if (location.pathname !== "/") {
+        // 메인 페이지가 아니면 메인으로 이동 후 스크롤 유도 state 전달
+        navigate("/", { state: { scrollTo: targetId } });
+      } else {
+        const element = document.getElementById(targetId);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+      }
+    }
+  };
+
+  const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (location.pathname === "/") {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
 
   return (
     <header
@@ -48,8 +74,9 @@ export function GNB() {
         }}
       >
         {/* Logo */}
-        <a
-          href="#hero"
+        <Link
+          to="/"
+          onClick={handleLogoClick}
           style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none" }}
         >
           <div
@@ -78,14 +105,15 @@ export function GNB() {
           >
             Budi Ensemble
           </span>
-        </a>
+        </Link>
 
         {/* Desktop Nav */}
-        <nav style={{ display: "flex", alignItems: "center", gap: 36 }} className="hidden-mobile">
+        <nav style={{ display: "flex", alignItems: "center", gap: 24 }} className="hidden-mobile">
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
+              onClick={(e) => handleNavClick(e, link.href)}
               style={{
                 fontFamily: "Pretendard, sans-serif",
                 fontWeight: 500,
@@ -106,15 +134,18 @@ export function GNB() {
               {link.label}
             </a>
           ))}
+
+          {/* 기존 섭외 문의 버튼 */}
           <a
             href="#contact"
+            onClick={(e) => handleNavClick(e, "#contact")}
             style={{
               fontFamily: "Pretendard, sans-serif",
               fontWeight: 700,
               fontSize: 14,
               color: "#05261D",
               backgroundColor: "#F2AF29",
-              padding: "9px 22px",
+              padding: "9px 20px",
               borderRadius: 8,
               textDecoration: "none",
               transition: "opacity 0.2s",
@@ -164,7 +195,10 @@ export function GNB() {
             <a
               key={link.href}
               href={link.href}
-              onClick={() => setMobileOpen(false)}
+              onClick={(e) => {
+                setMobileOpen(false);
+                handleNavClick(e, link.href);
+              }}
               style={{
                 fontFamily: "Pretendard, sans-serif",
                 fontWeight: 500,
@@ -178,7 +212,10 @@ export function GNB() {
           ))}
           <a
             href="#contact"
-            onClick={() => setMobileOpen(false)}
+            onClick={(e) => {
+              setMobileOpen(false);
+              handleNavClick(e, "#contact");
+            }}
             style={{
               fontFamily: "Pretendard, sans-serif",
               fontWeight: 700,

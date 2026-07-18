@@ -1,3 +1,4 @@
+import { Routes, Route } from "react-router";
 import "../styles/fonts.css";
 import { GNB } from "./components/GNB";
 import { HeroSection } from "./components/HeroSection";
@@ -7,8 +8,38 @@ import { PortfolioSection } from "./components/PortfolioSection";
 import { MapSection } from "./components/MapSection";
 import { ContactSection } from "./components/ContactSection";
 import { Footer } from "./components/Footer";
+import { GrillMePage } from "./components/GrillMePage";
 
-/* MARKER-MAKE-KIT-INVOKED */
+import { useEffect } from "react";
+import { useLocation } from "react-router";
+
+function LandingPage() {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state && (location.state as any).scrollTo) {
+      const id = (location.state as any).scrollTo;
+      const element = document.getElementById(id);
+      if (element) {
+        const timer = setTimeout(() => {
+          element.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [location]);
+
+  return (
+    <>
+      <HeroSection />
+      <AboutSection />
+      <ArtistsSection />
+      <PortfolioSection />
+      <MapSection />
+      <ContactSection />
+    </>
+  );
+}
 
 export default function App() {
   return (
@@ -73,12 +104,10 @@ export default function App() {
       `}</style>
 
       <GNB />
-      <HeroSection />
-      <AboutSection />
-      <ArtistsSection />
-      <PortfolioSection />
-      <MapSection />
-      <ContactSection />
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/grill-me" element={<GrillMePage />} />
+      </Routes>
       <Footer />
     </div>
   );

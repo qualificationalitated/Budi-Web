@@ -1,11 +1,15 @@
+import { useState } from "react";
 import { ArrowRight, Play } from "lucide-react";
 
 const MAIN_PHOTO =
-  "https://images.unsplash.com/photo-1465847899084-d164df4dedc6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080";
+  "https://images.unsplash.com/photo-1507838153414-b4b713384a76?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080";
 const SECONDARY_PHOTO =
-  "https://images.unsplash.com/photo-1519412666065-94acb3f8838f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600";
+  "https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600";
 
 export function HeroSection() {
+  const [hoverMain, setHoverMain] = useState(false);
+  const [hoverSub, setHoverSub] = useState(false);
+
   return (
     <section
       id="hero"
@@ -290,6 +294,8 @@ export function HeroSection() {
 
           {/* ── Main Frame ── */}
           <div
+            onMouseEnter={() => setHoverMain(true)}
+            onMouseLeave={() => setHoverMain(false)}
             style={{
               position: "relative",
               zIndex: 1,
@@ -298,9 +304,12 @@ export function HeroSection() {
               aspectRatio: "3/4",
               borderRadius: 24,
               overflow: "hidden",
-              boxShadow:
-                "0 20px 60px rgba(10,64,48,0.18), 0 8px 24px rgba(10,64,48,0.10)",
+              boxShadow: hoverMain
+                ? "0 28px 75px rgba(10,64,48,0.25), 0 12px 36px rgba(10,64,48,0.15)"
+                : "0 20px 60px rgba(10,64,48,0.18), 0 8px 24px rgba(10,64,48,0.10)",
               border: "4px solid #FFFFFF",
+              transform: hoverMain ? "translateY(-6px) scale(1.01)" : "translateY(0) scale(1)",
+              transition: "transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease",
             }}
           >
             <img
@@ -311,6 +320,8 @@ export function HeroSection() {
                 height: "100%",
                 objectFit: "cover",
                 display: "block",
+                transform: hoverMain ? "scale(1.05)" : "scale(1)",
+                transition: "transform 0.6s ease",
               }}
             />
             {/* Subtle inner vignette */}
@@ -368,6 +379,8 @@ export function HeroSection() {
 
           {/* ── Secondary Frame (collage overlap) ── */}
           <div
+            onMouseEnter={() => setHoverSub(true)}
+            onMouseLeave={() => setHoverSub(false)}
             style={{
               position: "absolute",
               bottom: 0,
@@ -377,9 +390,12 @@ export function HeroSection() {
               aspectRatio: "4/3",
               borderRadius: 18,
               overflow: "hidden",
-              boxShadow:
-                "0 12px 40px rgba(10,64,48,0.22), 0 4px 12px rgba(10,64,48,0.12)",
+              boxShadow: hoverSub
+                ? "0 20px 50px rgba(10,64,48,0.3), 0 8px 20px rgba(10,64,48,0.18)"
+                : "0 12px 40px rgba(10,64,48,0.22), 0 4px 12px rgba(10,64,48,0.12)",
               border: "3px solid #FFFFFF",
+              transform: hoverSub ? "translateY(-6px) scale(1.02) rotate(-1deg)" : "translateY(0) scale(1) rotate(0deg)",
+              transition: "transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease",
             }}
           >
             <img
@@ -390,6 +406,8 @@ export function HeroSection() {
                 height: "100%",
                 objectFit: "cover",
                 display: "block",
+                transform: hoverSub ? "scale(1.05)" : "scale(1)",
+                transition: "transform 0.6s ease",
               }}
             />
           </div>
@@ -406,6 +424,8 @@ export function HeroSection() {
               padding: "10px 14px",
               boxShadow: "0 4px 16px rgba(10,64,48,0.3)",
               border: "2px solid #FFFFFF",
+              transform: hoverSub ? "scale(1.05) translateY(-2px)" : "scale(1) translateY(0)",
+              transition: "transform 0.3s ease",
             }}
           >
             <div
