@@ -20,24 +20,155 @@ function LandingPage() {
     if (location.state && (location.state as any).scrollTo) {
       const id = (location.state as any).scrollTo;
       const element = document.getElementById(id);
-      if (element) {
+      const scrollContainer = document.querySelector(".scroll-container");
+      if (element && scrollContainer) {
+        scrollContainer.classList.add("is-navigating");
         const timer = setTimeout(() => {
           element.scrollIntoView({ behavior: "smooth" });
         }, 100);
-        return () => clearTimeout(timer);
+
+        const onScrollEnd = () => {
+          scrollContainer.classList.remove("is-navigating");
+        };
+
+        scrollContainer.addEventListener("scrollend", onScrollEnd, { once: true });
+        const fallbackTimer = setTimeout(onScrollEnd, 1000);
+
+        return () => {
+          clearTimeout(timer);
+          clearTimeout(fallbackTimer);
+          scrollContainer.removeEventListener("scrollend", onScrollEnd);
+        };
       }
     }
   }, [location]);
 
+  // 히어로 섹션과 소개 섹션 사이에서 튕기는 느낌을 강하게 주기 위한 커스텀 스크롤 휠 이벤트 처리
+  useEffect(() => {
+    const scrollContainer = document.querySelector(".scroll-container") as HTMLDivElement;
+    if (!scrollContainer) return;
+
+    let isAnimating = false;
+    let accumulatedDelta = 0;
+
+    const handleWheel = (e: WheelEvent) => {
+      const heroSection = document.querySelector(".hero-section");
+      const heroHeight = heroSection ? heroSection.getBoundingClientRect().height : window.innerHeight;
+      const scrollTop = scrollContainer.scrollTop;
+
+      if (isAnimating) {
+        e.preventDefault();
+        return;
+      }
+
+      // 1. 히어로 섹션(최상단)에서 아래로 스크롤할 때
+      if (scrollTop <= 10) {
+        if (e.deltaY > 0) {
+          e.preventDefault();
+          accumulatedDelta += e.deltaY;
+          
+          // 일정 임계값(80)까지 버티다가 넘어가면 빠르게 다음 섹션으로 이동
+          if (accumulatedDelta > 80) {
+            isAnimating = true;
+            accumulatedDelta = 0;
+            
+            const prevSnap = scrollContainer.style.scrollSnapType;
+            scrollContainer.style.scrollSnapType = "none";
+            
+            scrollContainer.scrollTo({
+              top: heroHeight,
+              behavior: "smooth"
+            });
+
+            setTimeout(() => {
+              scrollContainer.style.scrollSnapType = prevSnap;
+              isAnimating = false;
+            }, 600);
+          }
+        } else {
+          accumulatedDelta = 0;
+        }
+      }
+      // 2. 소개 섹션(두 번째 섹션) 시작점에서 위로 스크롤할 때
+      else if (Math.abs(scrollTop - heroHeight) <= 15) {
+        if (e.deltaY < 0) {
+          e.preventDefault();
+          accumulatedDelta += e.deltaY;
+          
+          // 일정 임계값(-80)까지 버티다가 넘어가면 빠르게 히어로 섹션으로 이동
+          if (accumulatedDelta < -80) {
+            isAnimating = true;
+            accumulatedDelta = 0;
+            
+            const prevSnap = scrollContainer.style.scrollSnapType;
+            scrollContainer.style.scrollSnapType = "none";
+            
+            scrollContainer.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+
+            setTimeout(() => {
+              scrollContainer.style.scrollSnapType = prevSnap;
+              isAnimating = false;
+            }, 600);
+          }
+        } else {
+          accumulatedDelta = 0;
+        }
+      } else {
+        accumulatedDelta = 0;
+      }
+    };
+
+    scrollContainer.addEventListener("wheel", handleWheel, { passive: false });
+    return () => scrollContainer.removeEventListener("wheel", handleWheel);
+  }, []);
+
+  // 모바일/터치스크린 환경 등을 위한 동적 스냅 활성화 여부만 처리
+  useEffect(() => {
+    const scrollContainer = document.querySelector(".scroll-container");
+    if (!scrollContainer) return;
+
+    const handleScroll = () => {
+      const heroSection = document.querySelector(".hero-section");
+      const heroHeight = heroSection ? heroSection.getBoundingClientRect().height : window.innerHeight;
+      
+      if (scrollContainer.scrollTop <= heroHeight + 5) {
+        scrollContainer.classList.add("snap-active");
+      } else {
+        scrollContainer.classList.remove("snap-active");
+      }
+    };
+
+    scrollContainer.addEventListener("scroll", handleScroll);
+    handleScroll();
+
+    return () => scrollContainer.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <>
-      <HeroSection />
-      <AboutSection />
-      <ArtistsSection />
-      <PortfolioSection />
-      <MapSection />
-      <ContactSection />
-    </>
+    <div className="scroll-container">
+      <div className="hero-section">
+        <HeroSection />
+      </div>
+      <div className="about-section">
+        <AboutSection />
+      </div>
+      <div className="artist-section">
+        <ArtistsSection />
+      </div>
+      <div className="portfolio-section">
+        <PortfolioSection />
+      </div>
+      <div className="map-section">
+        <MapSection />
+      </div>
+      <div className="contact-section">
+        <ContactSection />
+      </div>
+      <Footer />
+    </div>
   );
 }
 
@@ -55,6 +186,41 @@ export default function App() {
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body { background-color: #FFFFFF !important; }
+
+        /* 1. 전체를 감싸는 부모 컨테이너 */
+        .scroll-container {
+          width: 100%;
+          height: 100vh;
+          overflow-y: auto;
+          scroll-behavior: smooth;
+          scroll-snap-type: none; /* 기본 상태는 스냅 비활성화 */
+        }
+
+        /* 첫 두 화면 부근일 때만 Y축 스냅 활성화 (단, GNB 메뉴 클릭 등으로 이동 중일 때는 해제) */
+        .scroll-container.snap-active:not(.is-navigating) {
+          scroll-snap-type: y mandatory; 
+        }
+
+        /* 2. 첫 번째 '히어로 섹션'과 두 번째 '소개 섹션'에 스냅 고정 적용 */
+        .hero-section,
+        .about-section {
+          width: 100%;
+          scroll-snap-align: start; 
+        }
+
+        .hero-section {
+          height: 100vh;
+        }
+
+        /* 3. 세 번째 섹션부터는 스냅을 해제 */
+        .artist-section,
+        .portfolio-section,
+        .map-section,
+        .contact-section {
+          width: 100%;
+          height: auto; 
+          scroll-snap-align: none; 
+        }
 
         .hidden-mobile { display: flex !important; }
         .show-mobile { display: none !important; }
@@ -106,9 +272,8 @@ export default function App() {
       <GNB />
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/grill-me" element={<GrillMePage />} />
+        <Route path="/grill-me" element={<><GrillMePage /><Footer /></>} />
       </Routes>
-      <Footer />
     </div>
   );
 }

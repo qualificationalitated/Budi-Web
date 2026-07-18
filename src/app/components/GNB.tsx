@@ -17,9 +17,13 @@ export function GNB() {
   const location = useLocation();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
+    const onScroll = () => {
+      const scrollContainer = document.querySelector(".scroll-container");
+      const scrollY = scrollContainer ? scrollContainer.scrollTop : window.scrollY;
+      setScrolled(scrollY > 40);
+    };
+    window.addEventListener("scroll", onScroll, true);
+    return () => window.removeEventListener("scroll", onScroll, true);
   }, []);
 
   const isDark = scrolled;
@@ -33,8 +37,18 @@ export function GNB() {
         navigate("/", { state: { scrollTo: targetId } });
       } else {
         const element = document.getElementById(targetId);
-        if (element) {
+        const scrollContainer = document.querySelector(".scroll-container");
+        if (element && scrollContainer) {
+          scrollContainer.classList.add("is-navigating");
           element.scrollIntoView({ behavior: "smooth" });
+
+          const onScrollEnd = () => {
+            scrollContainer.classList.remove("is-navigating");
+          };
+
+          scrollContainer.addEventListener("scrollend", onScrollEnd, { once: true });
+          // Fallback
+          setTimeout(onScrollEnd, 1000);
         }
       }
     }
@@ -43,7 +57,20 @@ export function GNB() {
   const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (location.pathname === "/") {
       e.preventDefault();
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      const scrollContainer = document.querySelector(".scroll-container");
+      if (scrollContainer) {
+        scrollContainer.classList.add("is-navigating");
+        scrollContainer.scrollTo({ top: 0, behavior: "smooth" });
+
+        const onScrollEnd = () => {
+          scrollContainer.classList.remove("is-navigating");
+        };
+
+        scrollContainer.addEventListener("scrollend", onScrollEnd, { once: true });
+        setTimeout(onScrollEnd, 1000);
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
     }
   };
 
