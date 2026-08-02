@@ -7,10 +7,10 @@
 export const SECTION_CONFIG = {
   hero: true,
   about: true,
-  gallery: true, // Photo Gallery (ImageCarousel)
+  gallery: false, // Photo Gallery (ImageCarousel)
   artists: true,
-  portfolio: true,
-  map: true,
-  contact: true,
+  portfolio: false, // 작업 진행 안됨
+  map: false, // 작업 진행 안됨
+  contact: true, // 작업 진행 안됨
   grillMe: false, // AI performance planning subpage
 };
