@@ -1,18 +1,18 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router";
-import { 
-  Sparkles, 
-  ChevronRight, 
-  ChevronLeft, 
-  Check, 
-  Music, 
-  Users, 
-  Compass, 
-  DollarSign, 
-  FileText, 
-  Send, 
-  RefreshCw, 
-  Calendar, 
+import {
+  Sparkles,
+  ChevronRight,
+  ChevronLeft,
+  Check,
+  Music,
+  Users,
+  Compass,
+  DollarSign,
+  FileText,
+  Send,
+  RefreshCw,
+  Calendar,
   Award,
   ArrowRight,
   Info
@@ -303,7 +303,7 @@ export function GrillMePage() {
     e.preventDefault();
     if (!name || !email) return;
     setIsSubmitting(true);
-    
+
     // 임시 1.5초 딜레이 후 성공 처리 (추후 데이터베이스 저장 연동 예정)
     setTimeout(() => {
       setIsSubmitting(false);
@@ -320,9 +320,9 @@ export function GrillMePage() {
   const isSelected = currentField ? !!answers[currentField] : false;
 
   return (
-    <div 
-      style={{ 
-        minHeight: "100vh", 
+    <div
+      style={{
+        minHeight: "100vh",
         background: "linear-gradient(135deg, #05261D 0%, #0A4030 40%, #153E35 100%)",
         padding: "120px 24px 80px",
         color: "#FFFFFF",
@@ -330,7 +330,7 @@ export function GrillMePage() {
       }}
     >
       <div style={{ maxWidth: 1000, margin: "0 auto" }}>
-        
+
         {/* Header Section */}
         <div style={{ textAlign: "center", marginBottom: 48 }}>
           <div style={{
@@ -364,21 +364,21 @@ export function GrillMePage() {
               <span>{step} / 4단계</span>
             </div>
             <div style={{ width: "100%", height: 6, backgroundColor: "rgba(255,255,255,0.1)", borderRadius: 3, overflow: "hidden" }}>
-              <div 
-                style={{ 
-                  width: `${(step / 4) * 100}%`, 
-                  height: "100%", 
-                  backgroundColor: "#F2AF29", 
+              <div
+                style={{
+                  width: `${(step / 4) * 100}%`,
+                  height: "100%",
+                  backgroundColor: "#F2AF29",
                   borderRadius: 3,
                   transition: "width 0.4s cubic-bezier(0.4, 0, 0.2, 1)"
-                }} 
+                }}
               />
             </div>
           </div>
         )}
 
         {/* Main interactive panel */}
-        <div 
+        <div
           style={{
             backgroundColor: "rgba(255, 255, 255, 0.05)",
             backdropFilter: "blur(16px)",
@@ -403,7 +403,7 @@ export function GrillMePage() {
               </p>
 
               {/* Grid Options */}
-              <div 
+              <div
                 style={{
                   display: "grid",
                   gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
@@ -544,11 +544,11 @@ export function GrillMePage() {
               </div>
             </div>
           ) : (
-            
+
             /* Step 5: Beautiful Results Report Panel */
             <div>
               {/* Reset button upper right */}
-              <button 
+              <button
                 onClick={handleReset}
                 style={{
                   position: "absolute",
@@ -581,7 +581,7 @@ export function GrillMePage() {
               </div>
 
               {/* Grid 2 Columns for detailed content and estimation */}
-              <div 
+              <div
                 style={{
                   display: "grid",
                   gridTemplateColumns: "1.6fr 1fr",
@@ -603,7 +603,7 @@ export function GrillMePage() {
                     {/* Instruments badge list */}
                     <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
                       {rec.instruments.map((ins, idx) => (
-                        <span 
+                        <span
                           key={idx}
                           style={{
                             fontSize: 12,
@@ -629,7 +629,7 @@ export function GrillMePage() {
                     </h4>
                     <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
                       {rec.playlist.map((play, idx) => (
-                        <div 
+                        <div
                           key={idx}
                           style={{
                             backgroundColor: "rgba(255, 255, 255, 0.02)",
@@ -655,7 +655,7 @@ export function GrillMePage() {
                 </div>
 
                 {/* Result Right: Cost Estimation & Send inquiry form */}
-                <div 
+                <div
                   style={{
                     backgroundColor: "rgba(255, 255, 255, 0.03)",
                     border: "1px solid rgba(255,255,255,0.08)",
@@ -687,7 +687,7 @@ export function GrillMePage() {
                     </p>
 
                     {isSubmitted ? (
-                      <div 
+                      <div
                         style={{
                           backgroundColor: "rgba(40, 167, 69, 0.15)",
                           border: "1px solid rgba(40, 167, 69, 0.3)",
@@ -707,8 +707,8 @@ export function GrillMePage() {
                           <label style={{ display: "block", fontSize: 11, color: "rgba(255,255,255,0.6)", marginBottom: 4 }}>
                             성함 또는 담당 부서 *
                           </label>
-                          <input 
-                            type="text" 
+                          <input
+                            type="text"
                             required
                             placeholder="홍길동"
                             value={name}
@@ -729,8 +729,8 @@ export function GrillMePage() {
                           <label style={{ display: "block", fontSize: 11, color: "rgba(255,255,255,0.6)", marginBottom: 4 }}>
                             이메일 주소 *
                           </label>
-                          <input 
-                            type="email" 
+                          <input
+                            type="email"
                             required
                             placeholder="mail@company.com"
                             value={email}
@@ -751,8 +751,8 @@ export function GrillMePage() {
                           <label style={{ display: "block", fontSize: 11, color: "rgba(255,255,255,0.6)", marginBottom: 4 }}>
                             연락처 (선택)
                           </label>
-                          <input 
-                            type="tel" 
+                          <input
+                            type="tel"
                             placeholder="010-0000-0000"
                             value={phone}
                             onChange={(e) => setPhone(e.target.value)}
@@ -772,11 +772,11 @@ export function GrillMePage() {
                           <label style={{ display: "block", fontSize: 11, color: "rgba(255,255,255,0.6)", marginBottom: 4 }}>
                             추가 상세 요청사항
                           </label>
-                          <textarea 
+                          <textarea
                             rows={3}
                             placeholder="희망 날짜, 시간, 연주 원하는 특정 곡 등이 있다면 자유롭게 남겨주세요."
                             value={answers.additional}
-                            onChange={(e) => setAnswers({...answers, additional: e.target.value})}
+                            onChange={(e) => setAnswers({ ...answers, additional: e.target.value })}
                             style={{
                               width: "100%",
                               backgroundColor: "rgba(0,0,0,0.2)",
@@ -791,7 +791,7 @@ export function GrillMePage() {
                           />
                         </div>
 
-                        <button 
+                        <button
                           type="submit"
                           disabled={isSubmitting}
                           style={{

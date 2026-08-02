@@ -1,5 +1,6 @@
 import { Mail, Phone, Clock, Send } from "lucide-react";
 import { useState } from "react";
+import { CONTACT_INFO } from "../sectionConfig";
 
 export function ContactSection() {
   const [sent, setSent] = useState(false);
@@ -93,17 +94,17 @@ export function ContactSection() {
               {
                 icon: <Mail size={20} color="#1B7A63" />,
                 label: "이메일",
-                value: "booking@boodiensemble.com",
+                value: CONTACT_INFO.email,
               },
               {
                 icon: <Phone size={20} color="#1B7A63" />,
                 label: "전화",
-                value: "02-1234-5678",
+                value: CONTACT_INFO.phone,
               },
               {
                 icon: <Clock size={20} color="#1B7A63" />,
                 label: "상담 시간",
-                value: "평일 10:00 – 18:00",
+                value: CONTACT_INFO.hours,
               },
             ].map((item) => (
               <div

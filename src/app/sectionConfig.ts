@@ -14,3 +14,17 @@ export const SECTION_CONFIG = {
   contact: true, // 작업 진행 안됨
   grillMe: false, // AI performance planning subpage
 };
+
+/**
+ * Budi Ensemble Contact Info Configuration
+ * 
+ * Centralized place to manage email, phone number, hours, and SNS URLs.
+ */
+export const CONTACT_INFO = {
+  email: "budiensemble@gmail.com",
+  phone: "010-9423-7901",
+  hours: "평일 10:00 – 18:00",
+  youtube: "https://www.youtube.com/@budiensemble9606",
+  instagram: "https://www.instagram.com/budi_ensemble/",
+  blog: "https://blog.naver.com/budiensemble",
+};

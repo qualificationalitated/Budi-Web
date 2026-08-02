@@ -1,4 +1,13 @@
-import { Music2, Mail, Youtube, Instagram, Facebook } from "lucide-react";
+import { Music2, Mail, Youtube, Instagram, BookOpen } from "lucide-react";
+import { SECTION_CONFIG, CONTACT_INFO } from "../sectionConfig";
+
+const footerLinks = [
+  { id: "about", label: "소개", href: "#about" },
+  { id: "artists", label: "아티스트", href: "#artists" },
+  { id: "portfolio", label: "포트폴리오", href: "#portfolio" },
+  { id: "map", label: "공연 지도", href: "#map" },
+  { id: "contact", label: "문의", href: "#contact" },
+].filter((link) => SECTION_CONFIG[link.id as keyof typeof SECTION_CONFIG]);
 
 export function Footer() {
   return (
@@ -58,19 +67,21 @@ export function Footer() {
                 marginBottom: 24,
               }}
             >
-              피아노 퀸텟 Budi Ensemble은 클래식 음악의 깊이와 현대적 감성을 결합하여, 모든
-              순간을 특별하게 만드는 전문 음악 앙상블입니다.
+              부디(Budi) 앙상블은 2020년 만들어진 전문 피아노 & 현악 앙상블로서 <br />
+              듣는 모든 분들의 행복을 바라는 마음을 담아, 아름다운 이야기를 연주해 나갑니다.
             </p>
             <div style={{ display: "flex", gap: 12 }}>
               {[
-                { icon: <Mail size={16} />, href: "mailto:booking@boodiensemble.com" },
-                { icon: <Youtube size={16} />, href: "#" },
-                { icon: <Instagram size={16} />, href: "#" },
-                { icon: <Facebook size={16} />, href: "#" },
+                { icon: <Mail size={16} />, href: `mailto:${CONTACT_INFO.email}` },
+                { icon: <Youtube size={16} />, href: CONTACT_INFO.youtube },
+                { icon: <Instagram size={16} />, href: CONTACT_INFO.instagram },
+                { icon: <BookOpen size={16} />, href: CONTACT_INFO.blog },
               ].map((social, i) => (
                 <a
                   key={i}
                   href={social.href}
+                  target={social.href.startsWith("http") ? "_blank" : undefined}
+                  rel={social.href.startsWith("http") ? "noopener noreferrer" : undefined}
                   style={{
                     width: 36,
                     height: 36,
@@ -116,16 +127,10 @@ export function Footer() {
               바로가기
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              {[
-                ["소개", "#about"],
-                ["아티스트", "#artists"],
-                ["포트폴리오", "#portfolio"],
-                ["공연 지도", "#map"],
-                ["문의", "#contact"],
-              ].map(([label, href]) => (
+              {footerLinks.map((link) => (
                 <a
-                  key={href}
-                  href={href}
+                  key={link.href}
+                  href={link.href}
                   style={{
                     fontFamily: "Pretendard, sans-serif",
                     fontWeight: 400,
@@ -141,7 +146,7 @@ export function Footer() {
                     ((e.target as HTMLAnchorElement).style.color = "rgba(255,255,255,0.5)")
                   }
                 >
-                  {label}
+                  {link.label}
                 </a>
               ))}
             </div>
@@ -163,9 +168,9 @@ export function Footer() {
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
               {[
-                { label: "Email", value: "booking@boodiensemble.com" },
-                { label: "Tel", value: "02-1234-5678" },
-                { label: "Hours", value: "평일 10:00 – 18:00" },
+                { label: "Email", value: CONTACT_INFO.email },
+                { label: "Tel", value: CONTACT_INFO.phone },
+                { label: "Hours", value: CONTACT_INFO.hours },
               ].map((c) => (
                 <div key={c.label}>
                   <div
@@ -219,24 +224,24 @@ export function Footer() {
             © 2026 Budi Ensemble. All rights reserved.
           </span>
           <div style={{ display: "flex", gap: 24 }}>
-            {["개인정보처리방침", "이용약관"].map((item) => (
-              <a
-                key={item}
-                href="#"
-                style={{
-                  fontFamily: "Pretendard, sans-serif",
-                  fontWeight: 400,
-                  fontSize: 13,
-                  color: "rgba(255,255,255,0.3)",
-                  textDecoration: "none",
-                }}
-              >
-                {item}
-              </a>
-            ))}
+            <a
+              href="#"
+              style={{
+                fontFamily: "Pretendard, sans-serif",
+                fontWeight: 400,
+                fontSize: 13,
+                color: "rgba(255,255,255,0.3)",
+                textDecoration: "none",
+                transition: "color 0.2s",
+              }}
+              onMouseEnter={(e) => ((e.target as HTMLAnchorElement).style.color = "#F2AF29")}
+              onMouseLeave={(e) => ((e.target as HTMLAnchorElement).style.color = "rgba(255,255,255,0.3)")}
+            >
+              개인정보처리방침
+            </a>
           </div>
         </div>
       </div>
-    </footer>
+    </footer >
   );
 }
