@@ -66,15 +66,15 @@ function LandingPage() {
         if (e.deltaY > 0) {
           e.preventDefault();
           accumulatedDelta += e.deltaY;
-          
+
           // 일정 임계값(80)까지 버티다가 넘어가면 빠르게 다음 섹션으로 이동
-          if (accumulatedDelta > 80) {
+          if (accumulatedDelta > 100) {
             isAnimating = true;
             accumulatedDelta = 0;
-            
+
             const prevSnap = scrollContainer.style.scrollSnapType;
             scrollContainer.style.scrollSnapType = "none";
-            
+
             scrollContainer.scrollTo({
               top: heroHeight,
               behavior: "smooth"
@@ -94,15 +94,15 @@ function LandingPage() {
         if (e.deltaY < 0) {
           e.preventDefault();
           accumulatedDelta += e.deltaY;
-          
+
           // 일정 임계값(-80)까지 버티다가 넘어가면 빠르게 히어로 섹션으로 이동
-          if (accumulatedDelta < -80) {
+          if (accumulatedDelta < -100) {
             isAnimating = true;
             accumulatedDelta = 0;
-            
+
             const prevSnap = scrollContainer.style.scrollSnapType;
             scrollContainer.style.scrollSnapType = "none";
-            
+
             scrollContainer.scrollTo({
               top: 0,
               behavior: "smooth"
@@ -133,7 +133,7 @@ function LandingPage() {
     const handleScroll = () => {
       const heroSection = document.querySelector(".hero-section");
       const heroHeight = heroSection ? heroSection.getBoundingClientRect().height : window.innerHeight;
-      
+
       if (scrollContainer.scrollTop <= heroHeight + 5) {
         scrollContainer.classList.add("snap-active");
       } else {
