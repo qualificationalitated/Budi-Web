@@ -1,5 +1,4 @@
 import { Award, Heart, Globe } from "lucide-react";
-import { ImageCarousel } from "./ImageCarousel";
 
 const pillars = [
   {
@@ -172,9 +171,6 @@ export function AboutSection() {
             ))}
           </div>
         </div>
-
-        {/* Image Carousel — full width below the two-column content */}
-        <ImageCarousel />
       </div>
     </section>
   );

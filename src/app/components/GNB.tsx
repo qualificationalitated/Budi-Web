@@ -2,13 +2,15 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router";
 import { Music2, Menu, X, Sparkles } from "lucide-react";
 
+import { SECTION_CONFIG } from "../sectionConfig";
+
 const navLinks = [
-  { label: "소개", href: "#about" },
-  { label: "아티스트", href: "#artists" },
-  { label: "포트폴리오", href: "#portfolio" },
-  { label: "공연 지도", href: "#map" },
-  { label: "문의", href: "#contact" },
-];
+  { id: "about", label: "소개", href: "#about" },
+  { id: "artists", label: "아티스트", href: "#artists" },
+  { id: "portfolio", label: "포트폴리오", href: "#portfolio" },
+  { id: "map", label: "공연 지도", href: "#map" },
+  { id: "contact", label: "문의", href: "#contact" },
+].filter((link) => SECTION_CONFIG[link.id as keyof typeof SECTION_CONFIG]);
 
 export function GNB() {
   const [scrolled, setScrolled] = useState(false);
@@ -163,30 +165,32 @@ export function GNB() {
           ))}
 
           {/* 기존 섭외 문의 버튼 */}
-          <a
-            href="#contact"
-            onClick={(e) => handleNavClick(e, "#contact")}
-            style={{
-              fontFamily: "Pretendard, sans-serif",
-              fontWeight: 700,
-              fontSize: 14,
-              color: "#05261D",
-              backgroundColor: "#F2AF29",
-              padding: "9px 20px",
-              borderRadius: 8,
-              textDecoration: "none",
-              transition: "opacity 0.2s",
-              letterSpacing: "-0.2px",
-            }}
-            onMouseEnter={(e) =>
-              ((e.target as HTMLAnchorElement).style.opacity = "0.85")
-            }
-            onMouseLeave={(e) =>
-              ((e.target as HTMLAnchorElement).style.opacity = "1")
-            }
-          >
-            공연 섭외 문의
-          </a>
+          {SECTION_CONFIG.contact && (
+            <a
+              href="#contact"
+              onClick={(e) => handleNavClick(e, "#contact")}
+              style={{
+                fontFamily: "Pretendard, sans-serif",
+                fontWeight: 700,
+                fontSize: 14,
+                color: "#05261D",
+                backgroundColor: "#F2AF29",
+                padding: "9px 20px",
+                borderRadius: 8,
+                textDecoration: "none",
+                transition: "opacity 0.2s",
+                letterSpacing: "-0.2px",
+              }}
+              onMouseEnter={(e) =>
+                ((e.target as HTMLAnchorElement).style.opacity = "0.85")
+              }
+              onMouseLeave={(e) =>
+                ((e.target as HTMLAnchorElement).style.opacity = "1")
+              }
+            >
+              공연 섭외 문의
+            </a>
+          )}
         </nav>
 
         {/* Mobile Hamburger */}
@@ -237,26 +241,28 @@ export function GNB() {
               {link.label}
             </a>
           ))}
-          <a
-            href="#contact"
-            onClick={(e) => {
-              setMobileOpen(false);
-              handleNavClick(e, "#contact");
-            }}
-            style={{
-              fontFamily: "Pretendard, sans-serif",
-              fontWeight: 700,
-              fontSize: 15,
-              color: "#05261D",
-              backgroundColor: "#F2AF29",
-              padding: "13px 20px",
-              borderRadius: 8,
-              textDecoration: "none",
-              textAlign: "center",
-            }}
-          >
-            공연 섭외 문의
-          </a>
+          {SECTION_CONFIG.contact && (
+            <a
+              href="#contact"
+              onClick={(e) => {
+                setMobileOpen(false);
+                handleNavClick(e, "#contact");
+              }}
+              style={{
+                fontFamily: "Pretendard, sans-serif",
+                fontWeight: 700,
+                fontSize: 15,
+                color: "#05261D",
+                backgroundColor: "#F2AF29",
+                padding: "13px 20px",
+                borderRadius: 8,
+                textDecoration: "none",
+                textAlign: "center",
+              }}
+            >
+              공연 섭외 문의
+            </a>
+          )}
         </div>
       )}
     </header>

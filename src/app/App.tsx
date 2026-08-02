@@ -9,6 +9,8 @@ import { MapSection } from "./components/MapSection";
 import { ContactSection } from "./components/ContactSection";
 import { Footer } from "./components/Footer";
 import { GrillMePage } from "./components/GrillMePage";
+import { ImageCarousel } from "./components/ImageCarousel";
+import { SECTION_CONFIG } from "./sectionConfig";
 
 import { useEffect } from "react";
 import { useLocation } from "react-router";
@@ -149,24 +151,43 @@ function LandingPage() {
 
   return (
     <div className="scroll-container">
-      <div className="hero-section">
-        <HeroSection />
-      </div>
-      <div className="about-section">
-        <AboutSection />
-      </div>
-      <div className="artist-section">
-        <ArtistsSection />
-      </div>
-      <div className="portfolio-section">
-        <PortfolioSection />
-      </div>
-      <div className="map-section">
-        <MapSection />
-      </div>
-      <div className="contact-section">
-        <ContactSection />
-      </div>
+      {SECTION_CONFIG.hero && (
+        <div className="hero-section">
+          <HeroSection />
+        </div>
+      )}
+      {SECTION_CONFIG.about && (
+        <div className="about-section">
+          <AboutSection />
+        </div>
+      )}
+      {SECTION_CONFIG.gallery && (
+        <div className="gallery-section">
+          <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 24px 80px" }}>
+            <ImageCarousel />
+          </div>
+        </div>
+      )}
+      {SECTION_CONFIG.artists && (
+        <div className="artist-section">
+          <ArtistsSection />
+        </div>
+      )}
+      {SECTION_CONFIG.portfolio && (
+        <div className="portfolio-section">
+          <PortfolioSection />
+        </div>
+      )}
+      {SECTION_CONFIG.map && (
+        <div className="map-section">
+          <MapSection />
+        </div>
+      )}
+      {SECTION_CONFIG.contact && (
+        <div className="contact-section">
+          <ContactSection />
+        </div>
+      )}
       <Footer />
     </div>
   );
@@ -213,6 +234,7 @@ export default function App() {
         }
 
         /* 3. 세 번째 섹션부터는 스냅을 해제 */
+        .gallery-section,
         .artist-section,
         .portfolio-section,
         .map-section,
@@ -272,7 +294,9 @@ export default function App() {
       <GNB />
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/grill-me" element={<><GrillMePage /><Footer /></>} />
+        {SECTION_CONFIG.grillMe && (
+          <Route path="/grill-me" element={<><GrillMePage /><Footer /></>} />
+        )}
       </Routes>
     </div>
   );
