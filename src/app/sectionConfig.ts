@@ -23,8 +23,9 @@ export const SECTION_CONFIG = {
 export const CONTACT_INFO = {
   email: "budiensemble@gmail.com",
   phone: "010-9423-7901",
-  hours: "평일 10:00 – 18:00",
+  hours: "월~일요일 | 09:00 – 18:00",
   youtube: "https://www.youtube.com/@budiensemble9606",
   instagram: "https://www.instagram.com/budi_ensemble/",
   blog: "https://blog.naver.com/budiensemble",
+  kakaoChat: "https://open.kakao.com/o/s2qiFZif", // KakaoTalk 1:1 open chat room link
 };
