@@ -2,44 +2,52 @@ import { Music } from "lucide-react";
 
 const artists = [
   {
-    name: "이수연",
-    nameEn: "Suyeon Lee",
-    instrument: "피아노 · 작곡",
-    role: "앙상블 리더",
-    image: "https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?crop=entropy&cs=tinysrgb&fit=crop&h=400&w=400",
-    bio: "독일 뮌헨 국립음대 최고연주자과정 졸업. 섬세한 터치와 따뜻한 감성으로 앙상블의 음악적 깊이를 이끄는 리더입니다.",
-  },
-  {
-    name: "김민준",
-    nameEn: "Minjun Kim",
+    name: "정호진",
+    nameEn: "Hojin Jeong",
     instrument: "바이올린 I",
-    role: "수석 바이올리니스트",
+    role: "바이올리니스트",
     image: "https://images.unsplash.com/photo-1612225330812-01a9c6b355ee?crop=entropy&cs=tinysrgb&fit=crop&h=400&w=400",
-    bio: "오스트리아 모차르테움 국립음대 최우수 졸업. 화려한 테크닉과 호소력 짙은 음색을 자랑하는 바이올리니스트입니다.",
+    bio: "경북대학교 음악학과 바이올린 전공",
   },
   {
-    name: "박지원",
-    nameEn: "Jiwon Park",
+    name: "정선민",
+    nameEn: "Seonmin Jeong",
     instrument: "바이올린 II",
     role: "바이올리니스트",
     image: "https://images.unsplash.com/photo-1548504769-900b70ed122e?crop=entropy&cs=tinysrgb&fit=crop&h=400&w=400",
-    bio: "서울대학교 음악대학 졸업. 견고한 하모니와 명징한 호흡을 바탕으로 현악 선율 간의 이상적인 대위법적 조화를 구현합니다.",
+    bio: "경북대학교 음악학과 바이올린 전공",
   },
   {
-    name: "최아름",
-    nameEn: "Areum Choi",
-    instrument: "비올라",
-    role: "비올리스트",
-    image: "https://images.unsplash.com/photo-1507838153414-b4b713384a76?crop=entropy&cs=tinysrgb&fit=crop&h=400&w=400",
-    bio: "한국예술종합학교 전문사 졸업. 중후하고 아늑한 특유의 따스한 울림으로 앙상블의 허리를 단단하게 채워줍니다.",
-  },
-  {
-    name: "정우성",
-    nameEn: "Woosung Jung",
+    name: "김혜준",
+    nameEn: "Hyejun Kim",
     instrument: "첼로",
     role: "첼리스트",
     image: "https://images.unsplash.com/photo-1580974511812-4b7196c56830?crop=entropy&cs=tinysrgb&fit=crop&h=400&w=400",
-    bio: "미국 피바디 음악대학 석사 졸업. 묵직하고 흔들림 없는 타격감과 풍부한 보잉으로 앙상블의 든든한 초석을 쌓습니다.",
+    bio: "경북대학교 음악학과 첼로 전공",
+  },
+  {
+    name: "양수연",
+    nameEn: "Suyeon Yang",
+    instrument: "비올라",
+    role: "비올리스트",
+    image: "https://images.unsplash.com/photo-1507838153414-b4b713384a76?crop=entropy&cs=tinysrgb&fit=crop&h=400&w=400",
+    bio: "경북대학교 음악학과 비올라 전공",
+  },
+  {
+    name: "정세인",
+    nameEn: "Sein Jung",
+    instrument: "피아노",
+    role: "피아니스트",
+    image: "https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?crop=entropy&cs=tinysrgb&fit=crop&h=400&w=400",
+    bio: "계명대학교 음악공연예술대학 피아노 전공",
+  },
+  {
+    name: "이수정",
+    nameEn: "Sujeong Lee",
+    instrument: "작곡",
+    role: "작곡가",
+    image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?crop=entropy&cs=tinysrgb&fit=crop&h=400&w=400",
+    bio: "경북대학교 음악학과 작곡 전공",
   },
 ];
 
@@ -90,7 +98,7 @@ export function ArtistsSection() {
               marginBottom: 16,
             }}
           >
-            5인의 전문 연주자
+            부디 앙상블 아티스트
           </h2>
           <p
             style={{
@@ -103,7 +111,7 @@ export function ArtistsSection() {
               lineHeight: 1.7,
             }}
           >
-            국내외 최정상 음악 교육기관 출신의 다섯 명의 솔리스트들이 부디 앙상블로 만나, 각 악기의 고유한 매력을 살려 하나의 완전한 울림을 빚어냅니다.
+            전문 연주자와 작곡가로 구성된 6명의 아티스트들이 만나, 각 악기의 고유한 매력을 살려 깊이 있는 하나의 울림을 빚어냅니다.
           </p>
         </div>
 
@@ -166,7 +174,7 @@ export function ArtistsSection() {
                     transition: "transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
                   }}
                 />
-                
+
                 {/* Role badge overlay */}
                 <div
                   style={{
@@ -217,7 +225,7 @@ export function ArtistsSection() {
                 >
                   {artist.nameEn}
                 </div>
-                
+
                 {/* Instrument badge */}
                 <div
                   style={{
