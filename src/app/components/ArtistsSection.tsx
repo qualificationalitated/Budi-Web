@@ -18,20 +18,20 @@ const artists = [
     bio: "경북대학교 음악학과 바이올린 전공",
   },
   {
-    name: "김혜준",
-    nameEn: "Hyejun Kim",
-    instrument: "첼로",
-    role: "첼리스트",
-    image: "https://images.unsplash.com/photo-1580974511812-4b7196c56830?crop=entropy&cs=tinysrgb&fit=crop&h=400&w=400",
-    bio: "경북대학교 음악학과 첼로 전공",
-  },
-  {
     name: "양수연",
     nameEn: "Suyeon Yang",
     instrument: "비올라",
     role: "비올리스트",
     image: "https://images.unsplash.com/photo-1507838153414-b4b713384a76?crop=entropy&cs=tinysrgb&fit=crop&h=400&w=400",
     bio: "경북대학교 음악학과 비올라 전공",
+  },
+  {
+    name: "김혜준",
+    nameEn: "Hyejun Kim",
+    instrument: "첼로",
+    role: "첼리스트",
+    image: "https://images.unsplash.com/photo-1580974511812-4b7196c56830?crop=entropy&cs=tinysrgb&fit=crop&h=400&w=400",
+    bio: "경북대학교 음악학과 첼로 전공",
   },
   {
     name: "정세인",
@@ -115,12 +115,12 @@ export function ArtistsSection() {
           </p>
         </div>
 
-        {/* Cards grid */}
+        {/* Cards grid: 3열 2행 구조 */}
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-            gap: 24,
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: 28,
           }}
           className="artists-grid"
         >

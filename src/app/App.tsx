@@ -244,6 +244,18 @@ export default function App() {
           scroll-snap-align: none; 
         }
 
+        /* 4. 아티스트 그리드 반응형 (데스크톱 3x2, 태블릿 2x3, 모바일 1x6) */
+        @media (max-width: 900px) {
+          .artists-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+          }
+        }
+        @media (max-width: 600px) {
+          .artists-grid {
+            grid-template-columns: repeat(1, 1fr) !important;
+          }
+        }
+
         .hidden-mobile { display: flex !important; }
         .show-mobile { display: none !important; }
 
