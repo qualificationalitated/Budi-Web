@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { Music2, Mail, Youtube, Instagram, BookOpen } from "lucide-react";
 import { SECTION_CONFIG, CONTACT_INFO } from "../sectionConfig";
+import { PrivacyPolicyModal } from "./PrivacyPolicyModal";
 
 const footerLinks = [
   { id: "about", label: "소개", href: "#about" },
@@ -10,6 +12,8 @@ const footerLinks = [
 ].filter((link) => SECTION_CONFIG[link.id as keyof typeof SECTION_CONFIG]);
 
 export function Footer() {
+  const [privacyOpen, setPrivacyOpen] = useState(false);
+
   return (
     <footer
       id="footer"
@@ -230,24 +234,30 @@ export function Footer() {
             © 2026 Budi Ensemble. All rights reserved. | 사업자등록번호: {CONTACT_INFO.businessNumber}
           </span>
           <div style={{ display: "flex", gap: 24 }}>
-            <a
-              href="#"
+            <button
+              onClick={() => setPrivacyOpen(true)}
               style={{
                 fontFamily: "Pretendard, sans-serif",
                 fontWeight: 400,
                 fontSize: 13,
                 color: "rgba(255,255,255,0.3)",
-                textDecoration: "none",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                padding: 0,
                 transition: "color 0.2s",
               }}
-              onMouseEnter={(e) => ((e.target as HTMLAnchorElement).style.color = "#F2AF29")}
-              onMouseLeave={(e) => ((e.target as HTMLAnchorElement).style.color = "rgba(255,255,255,0.3)")}
+              onMouseEnter={(e) => ((e.target as HTMLButtonElement).style.color = "#F2AF29")}
+              onMouseLeave={(e) => ((e.target as HTMLButtonElement).style.color = "rgba(255,255,255,0.3)")}
             >
               개인정보처리방침
-            </a>
+            </button>
           </div>
         </div>
       </div>
-    </footer >
+
+      {/* Privacy Policy Modal */}
+      <PrivacyPolicyModal isOpen={privacyOpen} onClose={() => setPrivacyOpen(false)} />
+    </footer>
   );
 }

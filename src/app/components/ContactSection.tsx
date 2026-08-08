@@ -273,8 +273,7 @@ export function ContactSection() {
               {[
                 { 
                   step: "01", 
-                  label: "상담 채널 연결", 
-                  desc: (
+                  text: (
                     <span>
                       아래 <strong>'카카오톡 실시간 상담하기'</strong> 버튼 클릭
                     </span>
@@ -282,8 +281,7 @@ export function ContactSection() {
                 },
                 { 
                   step: "02", 
-                  label: "채팅방 입장", 
-                  desc: (
+                  text: (
                     <span>
                       부디 앙상블 <strong>1:1 오픈채팅방</strong> 입장
                     </span>
@@ -291,102 +289,104 @@ export function ContactSection() {
                 },
                 { 
                   step: "03", 
-                  label: "공연 정보 공유 (필수)", 
-                  desc: (
-                    <span style={{ color: "#1B7A63" }}>
-                      <strong>연주 일정, 장소, 행사 형식, 희망 악기 구성 및 연주곡</strong> 전달
+                  text: (
+                    <span style={{ color: "#05261D" }}>
+                      <strong>연주 일정, 장소, 행사 형식, 희망 악기 구성 및 연주곡</strong> 전달 <span style={{ color: "#1B7A63", fontWeight: 700, fontSize: 15 }}>(필수)</span>
                     </span>
                   ) 
                 },
               ].map((s, idx) => (
-                <div key={idx} style={{ display: "flex", alignItems: "flex-start", gap: 14 }}>
+                <div key={idx} style={{ display: "flex", alignItems: "center", gap: 18 }}>
                   <span
                     style={{
                       fontFamily: "Pretendard, sans-serif",
                       fontWeight: 800,
-                      fontSize: 13,
+                      fontSize: 16,
                       color: "#1B7A63",
                       backgroundColor: "#E6F2F0",
-                      width: 28,
-                      height: 28,
+                      width: 36,
+                      height: 36,
                       borderRadius: "50%",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                       flexShrink: 0,
-                      marginTop: 2,
                     }}
                   >
                     {s.step}
                   </span>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                    <span
-                      style={{
-                        fontFamily: "Pretendard, sans-serif",
-                        fontWeight: 700,
-                        fontSize: 15,
-                        color: "#05261D",
-                      }}
-                    >
-                      {s.label}
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: "Pretendard, sans-serif",
-                        fontWeight: 500,
-                        fontSize: 13,
-                        color: s.step === "03" ? "#1B7A63" : "#636e72",
-                        lineHeight: 1.4,
-                      }}
-                    >
-                      {s.desc}
-                    </span>
+                  <div
+                    style={{
+                      fontFamily: "Pretendard, sans-serif",
+                      fontWeight: 500,
+                      fontSize: 17,
+                      color: "#2D3436",
+                      lineHeight: 1.5,
+                    }}
+                  >
+                    {s.text}
                   </div>
                 </div>
               ))}
             </div>
 
             {/* Kakao Button */}
-            <a
-              href={CONTACT_INFO.kakaoChat}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                width: "100%",
-                fontFamily: "Pretendard, sans-serif",
-                fontWeight: 700,
-                fontSize: 15,
-                color: "#191919",
-                backgroundColor: "#FEE500",
-                border: "none",
-                borderRadius: 10,
-                padding: "13px 14px",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: 10,
-                boxShadow: "0 6px 20px rgba(254,229,0,0.3)",
-                transition: "transform 0.2s, opacity 0.2s",
-                textDecoration: "none",
-                boxSizing: "border-box",
-              }}
-              onMouseEnter={(e) => {
-                const target = e.currentTarget as HTMLAnchorElement;
-                target.style.opacity = "0.9";
-                target.style.transform = "translateY(-1px)";
-              }}
-              onMouseLeave={(e) => {
-                const target = e.currentTarget as HTMLAnchorElement;
-                target.style.opacity = "1";
-                target.style.transform = "translateY(0)";
-              }}
-            >
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="#191919">
-                <path d="M12 3c-5.523 0-10 3.582-10 8 0 2.923 1.956 5.492 4.904 6.78l-1.026 3.766c-.105.385.344.682.68.458l4.498-2.999c.307.032.62.051.944.051 5.523 0 10-3.582 10-8s-4.477-8-10-8z" />
-              </svg>
-              카카오톡 실시간 상담하기
-            </a>
+            <div>
+              <a
+                href={CONTACT_INFO.kakaoChat}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  width: "100%",
+                  fontFamily: "Pretendard, sans-serif",
+                  fontWeight: 700,
+                  fontSize: 15,
+                  color: "#191919",
+                  backgroundColor: "#FEE500",
+                  border: "none",
+                  borderRadius: 10,
+                  padding: "13px 14px",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 10,
+                  boxShadow: "0 6px 20px rgba(254,229,0,0.3)",
+                  transition: "transform 0.2s, opacity 0.2s",
+                  textDecoration: "none",
+                  boxSizing: "border-box",
+                }}
+                onMouseEnter={(e) => {
+                  const target = e.currentTarget as HTMLAnchorElement;
+                  target.style.opacity = "0.9";
+                  target.style.transform = "translateY(-1px)";
+                }}
+                onMouseLeave={(e) => {
+                  const target = e.currentTarget as HTMLAnchorElement;
+                  target.style.opacity = "1";
+                  target.style.transform = "translateY(0)";
+                }}
+              >
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="#191919">
+                  <path d="M12 3c-5.523 0-10 3.582-10 8 0 2.923 1.956 5.492 4.904 6.78l-1.026 3.766c-.105.385.344.682.68.458l4.498-2.999c.307.032.62.051.944.051 5.523 0 10-3.582 10-8s-4.477-8-10-8z" />
+                </svg>
+                카카오톡 실시간 상담하기
+              </a>
+              <p
+                style={{
+                  fontFamily: "Pretendard, sans-serif",
+                  fontWeight: 400,
+                  fontSize: 12,
+                  color: "#95a5a6",
+                  textAlign: "center",
+                  marginTop: 10,
+                  marginBottom: 0,
+                  lineHeight: 1.4,
+                }}
+              >
+                * 상담 시 제공해주시는 정보는 섭외 문의 및 견적 안내 목적으로만 활용됩니다.
+              </p>
+            </div>
           </div>
 
           {/* 
