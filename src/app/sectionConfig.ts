@@ -22,8 +22,9 @@ export const SECTION_CONFIG = {
  */
 export const CONTACT_INFO = {
   email: "budiensemble@gmail.com",
-  phone: "010-9423-7901",
+  phone: ["010-9423-7901", "010-5360-1431"],
   hours: "월~일요일 | 09:00 – 18:00",
+  businessNumber: "144-27-01586",
   youtube: "https://www.youtube.com/@budiensemble9606",
   instagram: "https://www.instagram.com/budi_ensemble/",
   blog: "https://blog.naver.com/budiensemble",

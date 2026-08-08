@@ -170,6 +170,7 @@ export function Footer() {
               {[
                 { label: "Email", value: CONTACT_INFO.email },
                 { label: "Tel", value: CONTACT_INFO.phone },
+                { label: "Business Reg.", value: CONTACT_INFO.businessNumber },
                 { label: "Hours", value: CONTACT_INFO.hours },
               ].map((c) => (
                 <div key={c.label}>
@@ -191,9 +192,14 @@ export function Footer() {
                       fontWeight: 400,
                       fontSize: 14,
                       color: "rgba(255,255,255,0.55)",
+                      lineHeight: 1.5,
                     }}
                   >
-                    {c.value}
+                    {Array.isArray(c.value) ? (
+                      c.value.map((v, i) => <div key={i}>{v}</div>)
+                    ) : (
+                      c.value
+                    )}
                   </div>
                 </div>
               ))}
@@ -221,7 +227,7 @@ export function Footer() {
               color: "rgba(255,255,255,0.3)",
             }}
           >
-            © 2026 Budi Ensemble. All rights reserved.
+            © 2026 Budi Ensemble. All rights reserved. | 사업자등록번호: {CONTACT_INFO.businessNumber}
           </span>
           <div style={{ display: "flex", gap: 24 }}>
             <a

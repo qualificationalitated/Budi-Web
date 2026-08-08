@@ -154,9 +154,14 @@ export function ContactSection() {
                       fontSize: 18,
                       color: "#05261D",
                       letterSpacing: "-0.3px",
+                      lineHeight: 1.4,
                     }}
                   >
-                    {item.value}
+                    {Array.isArray(item.value) ? (
+                      item.value.map((v, i) => <div key={i}>{v}</div>)
+                    ) : (
+                      item.value
+                    )}
                   </div>
                 </div>
               </div>
