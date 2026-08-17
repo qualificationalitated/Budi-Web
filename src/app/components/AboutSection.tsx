@@ -174,7 +174,7 @@ export function AboutSection() {
             }}
           >
             <img
-              src="https://images.unsplash.com/photo-1465847899084-d164df4dedc6?crop=entropy&cs=tinysrgb&fit=crop&h=800&w=1000"
+              src="/images/about_budi/about_budi.webp"
               alt="부디 앙상블 라이브 현장 무대"
               style={{
                 width: "100%",

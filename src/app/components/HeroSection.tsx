@@ -1,7 +1,7 @@
 import { Music } from "lucide-react";
 
 const BACKGROUND_IMAGE =
-  "https://images.unsplash.com/photo-1507838153414-b4b713384a76?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1920";
+  "/images/hero_background/hero_section_background.webp";
 
 export function HeroSection() {
   return (
@@ -21,12 +21,12 @@ export function HeroSection() {
         overflow: "hidden",
       }}
     >
-      {/* Black Gradient Overlay */}
+      {/* Black Diagonal Gradient Overlay */}
       <div
         style={{
           position: "absolute",
           inset: 0,
-          background: "linear-gradient(to right, rgba(10, 10, 10, 0.94) 0%, rgba(10, 10, 10, 0.88) 35%, rgba(10, 10, 10, 0.45) 75%, rgba(10, 10, 10, 0.25) 100%)",
+          background: "linear-gradient(115deg, rgba(10, 10, 10, 0.95) 0%, rgba(10, 10, 10, 0.88) 32%, rgba(10, 10, 10, 0.52) 68%, rgba(10, 10, 10, 0.18) 90%, transparent 100%)",
           zIndex: 1,
           pointerEvents: "none",
         }}
@@ -95,16 +95,15 @@ export function HeroSection() {
             fontFamily: "'Noto Serif KR', 'Pretendard', serif",
             fontWeight: 400,
             fontSize: "clamp(24px, 3vw, 38px)",
-            color: "rgba(255, 255, 255, 0.95)",
+            color: "rgba(255, 255, 255, 0.85)",
             lineHeight: 1.55,
             letterSpacing: "-0.8px",
             marginBottom: 36,
             wordBreak: "keep-all",
-            textShadow: "0 2px 12px rgba(0,0,0,0.4)",
+            textShadow: "0 2px 14px rgba(0,0,0,0.5)",
           }}
         >
           부디, 선율로 채워진 <br />아름다운 이야기이기를
-
         </h1>
         {/* 뒷 배경으로는 연주하고 있는 사진*/}
 

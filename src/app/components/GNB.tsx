@@ -106,27 +106,25 @@ export function GNB() {
         <Link
           to="/"
           onClick={handleLogoClick}
-          style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none" }}
+          style={{ display: "flex", alignItems: "center", gap: 12, textDecoration: "none" }}
         >
-          <div
+          <img
+            src="/images/logo/budi_logo.webp"
+            alt="Budi Ensemble Logo"
             style={{
-              width: 36,
-              height: 36,
+              width: 42,
+              height: 42,
               borderRadius: "50%",
-              backgroundColor: "#1B7A63",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
+              objectFit: "cover",
+              display: "block",
               flexShrink: 0,
             }}
-          >
-            <Music2 size={18} color="#FFFFFF" strokeWidth={2.5} />
-          </div>
+          />
           <span
             style={{
-              fontFamily: "Pretendard, sans-serif",
+              fontFamily: "'Playfair Display', 'Cinzel', 'Noto Serif KR', serif",
               fontWeight: 700,
-              fontSize: 17,
+              fontSize: 20,
               color: isDark ? "#FFFFFF" : "#2D3436",
               letterSpacing: "-0.3px",
               transition: "color 0.3s",

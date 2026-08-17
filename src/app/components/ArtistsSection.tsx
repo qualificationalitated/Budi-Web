@@ -7,7 +7,7 @@ const artists = [
     instrument: "바이올린",
     instrumentEn: "VIOLIN",
     role: "바이올리니스트",
-    image: "/images/hojin.webp",
+    image: "/images/artist_profile/hojin.webp",
     bio: "경북대학교 음악학과 바이올린 전공",
   },
   {
@@ -16,7 +16,7 @@ const artists = [
     instrument: "바이올린",
     instrumentEn: "VIOLIN",
     role: "바이올리니스트",
-    image: "/images/seonmin.webp",
+    image: "/images/artist_profile/seonmin.webp",
     bio: "경북대학교 음악학과 바이올린 전공",
   },
   {
@@ -25,7 +25,7 @@ const artists = [
     instrument: "비올라",
     instrumentEn: "VIOLA",
     role: "비올리스트",
-    image: "/images/suyeon.webp",
+    image: "/images/artist_profile/suyeon.webp",
     bio: "경북대학교 음악학과 비올라 전공",
   },
   {
@@ -34,7 +34,7 @@ const artists = [
     instrument: "첼로",
     instrumentEn: "CELLO",
     role: "첼리스트",
-    image: "/images/hyejun.webp",
+    image: "/images/artist_profile/hyejun.webp",
     bio: "경북대학교 음악학과 첼로 전공",
   },
   {
@@ -43,7 +43,7 @@ const artists = [
     instrument: "피아노",
     instrumentEn: "PIANO",
     role: "피아니스트",
-    image: "/images/sein.webp",
+    image: "/images/artist_profile/sein.webp",
     bio: "계명대학교 음악공연예술대학 피아노 전공",
   },
   {
@@ -52,7 +52,7 @@ const artists = [
     instrument: "작곡",
     instrumentEn: "COMPOSER",
     role: "작곡가",
-    image: "/images/sujeong.webp",
+    image: "/images/artist_profile/sujeong.webp",
     bio: "경북대학교 음악학과 작곡 전공",
   },
 ];

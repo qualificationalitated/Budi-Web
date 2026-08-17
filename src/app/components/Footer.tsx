@@ -35,26 +35,26 @@ export function Footer() {
         >
           {/* Brand */}
           <div>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-              <div
+            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
+              <img
+                src="/images/logo/budi_logo.webp"
+                alt="Budi Ensemble Logo"
                 style={{
-                  width: 36,
-                  height: 36,
+                  width: 40,
+                  height: 40,
                   borderRadius: "50%",
-                  backgroundColor: "#F2AF29",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  objectFit: "cover",
+                  display: "block",
+                  flexShrink: 0,
                 }}
-              >
-                <Music2 size={18} color="#05261D" strokeWidth={2.5} />
-              </div>
+              />
               <span
                 style={{
-                  fontFamily: "Pretendard, sans-serif",
+                  fontFamily: "'Playfair Display', 'Cinzel', 'Noto Serif KR', serif",
                   fontWeight: 700,
-                  fontSize: 18,
+                  fontSize: 20,
                   color: "#FFFFFF",
+                  letterSpacing: "-0.3px",
                 }}
               >
                 Budi Ensemble
