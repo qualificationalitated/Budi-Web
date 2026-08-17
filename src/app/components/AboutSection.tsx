@@ -13,19 +13,19 @@ export function AboutSection() {
         position: "relative",
       }}
     >
-      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-        
+      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+
         {/* ========================================================
-            1. 섹션 헤더 (ABOUT BUDI + 감성 영문 필기체 Blurb)
+            1. 섹션 헤더 (ABOUT BUDI + 메인 카피 + 댓글 후기 3종)
            ======================================================== */}
-        <div style={{ textAlign: "center", marginBottom: 64 }}>
+        <div style={{ textAlign: "center", marginBottom: 54 }}>
           <div
             style={{
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               gap: 12,
-              marginBottom: 20,
+              marginBottom: 18,
             }}
           >
             <div style={{ width: 32, height: 2, backgroundColor: "#1B7A63" }} />
@@ -44,127 +44,150 @@ export function AboutSection() {
             <div style={{ width: 32, height: 2, backgroundColor: "#1B7A63" }} />
           </div>
 
-          {/* 감성 영문 Blurb 한 줄 */}
-          <p
+          {/* 메인 카피 */}
+          <h2
             style={{
-              fontFamily: "Pretendard, -apple-system, sans-serif",
-              fontStyle: "italic",
-              fontWeight: 500,
-              fontSize: "clamp(18px, 2.2vw, 24px)",
-              color: "#64748B",
-              letterSpacing: "0.2px",
-              margin: 0,
-              lineHeight: 1.5,
+              fontFamily: "Pretendard, sans-serif",
+              fontWeight: 800,
+              fontSize: "clamp(24px, 3.2vw, 36px)",
+              color: "#05261D",
+              lineHeight: 1.45,
+              letterSpacing: "-0.6px",
+              maxWidth: 860,
+              margin: "0 auto",
+              wordBreak: "keep-all",
             }}
           >
-            “Where warm melodies breathe life into every shared moment on stage.”
-          </p>
+            공간의 품격을 완성하는 맞춤형 라이브, <br />
+            <span style={{ color: "#1B7A63" }}>수많은 찬사로 증명된 부디 앙상블의 압도적 퀄리티</span>
+          </h2>
         </div>
 
         {/* ========================================================
-            2. 에디토리얼 스토리 & 현장 컷 (2-Column Editorial Layout)
+            실제 공연 후기 3종 (Social Proof)
            ======================================================== */}
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "0.95fr 1.05fr",
-            gap: 60,
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: 20,
+            marginBottom: 72,
+          }}
+          className="about-reviews-grid"
+        >
+          {[
+            {
+              category: "VIP Event",
+              text: "“격조 높은 연주 덕분에 행사의 품격이 달라졌습니다. 귀빈 만족도 최고!”",
+              author: "기업 VIP 행사 기획 담당자",
+            },
+            {
+              category: "Wedding",
+              text: "“신부대기실에서부터 울려 퍼지는 음악에 행복이 가득 찼어요. 지인들에게 무조건 강력 추천합니다”",
+              author: "프라이빗 웨딩 신부님",
+            },
+            {
+              category: "Festival",
+              text: "“축제에서 우연히 듣고 완전 귀호강… 일상 탈출 제대로 하고 울컥할 만큼 좋았어요.”",
+              author: "영평사 낙화 페스티벌 관람객",
+            },
+          ].map((rev, idx) => (
+            <div
+              key={idx}
+              style={{
+                backgroundColor: "#F9FBFA",
+                border: "1px solid #CCEDE6",
+                borderRadius: 16,
+                padding: "24px 22px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                boxShadow: "0 4px 16px rgba(10, 64, 48, 0.03)",
+              }}
+            >
+              <div>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+                  <span
+                    style={{
+                      fontSize: 11,
+                      fontWeight: 700,
+                      color: "#1B7A63",
+                      letterSpacing: "1.2px",
+                      textTransform: "uppercase",
+                      fontFamily: "Pretendard, sans-serif",
+                    }}
+                  >
+                    {rev.category}
+                  </span>
+                  <span style={{ color: "#F2AF29", fontSize: 12, letterSpacing: "2px" }}>★★★★★</span>
+                </div>
+                <p
+                  style={{
+                    fontFamily: "Pretendard, sans-serif",
+                    fontWeight: 600,
+                    fontSize: 15,
+                    color: "#2D3436",
+                    lineHeight: 1.65,
+                    letterSpacing: "-0.02em",
+                    margin: 0,
+                  }}
+                >
+                  {rev.text}
+                </p>
+              </div>
+              <span
+                style={{
+                  fontFamily: "Pretendard, sans-serif",
+                  fontWeight: 500,
+                  fontSize: 12,
+                  color: "#8395a7",
+                  marginTop: 16,
+                  textAlign: "right",
+                  display: "block",
+                }}
+              >
+                — {rev.author}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        {/* ========================================================
+            2. 에디토리얼 스토리 & 현장 컷 (Clean 5:4 Layout)
+           ======================================================== */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "0.85fr 1.15fr",
+            gap: 52,
             alignItems: "center",
           }}
           className="about-story-row"
         >
-          {/* [좌측] 현장 사진 & 감성 인용구 */}
-          <div>
-            <div
+          {/* [좌측] 가로형 5:4 비율의 클린 원본 현장 사진 */}
+          <div
+            style={{
+              position: "relative",
+              overflow: "hidden",
+              aspectRatio: "5 / 4",
+              backgroundColor: "#F5F5F5",
+            }}
+          >
+            <img
+              src="https://images.unsplash.com/photo-1465847899084-d164df4dedc6?crop=entropy&cs=tinysrgb&fit=crop&h=800&w=1000"
+              alt="부디 앙상블 라이브 현장 무대"
               style={{
-                position: "relative",
-                borderRadius: 18,
-                overflow: "hidden",
-                aspectRatio: "4 / 3",
-                boxShadow: "0 16px 40px rgba(5, 38, 29, 0.09)",
-                cursor: "default",
-                marginBottom: 20,
-                backgroundColor: "#F5F5F5",
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                display: "block",
               }}
-              onMouseEnter={() => setIsImgHovered(true)}
-              onMouseLeave={() => setIsImgHovered(false)}
-            >
-              <img
-                src="https://images.unsplash.com/photo-1465847899084-d164df4dedc6?crop=entropy&cs=tinysrgb&fit=crop&h=700&w=900"
-                alt="부디 앙상블 라이브 현장 무대"
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  display: "block",
-                  transform: isImgHovered ? "scale(1.03)" : "scale(1)",
-                  transition: "transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)",
-                }}
-              />
-              <div
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  background: "linear-gradient(to top, rgba(5, 38, 29, 0.85) 0%, transparent 60%)",
-                  display: "flex",
-                  alignItems: "flex-end",
-                  padding: "26px 26px",
-                }}
-              >
-                <div>
-                  <span
-                    style={{
-                      fontFamily: "Pretendard, sans-serif",
-                      fontWeight: 700,
-                      fontSize: 11,
-                      color: "#F2AF29",
-                      letterSpacing: "1.5px",
-                      textTransform: "uppercase",
-                      display: "block",
-                      marginBottom: 4,
-                    }}
-                  >
-                    LIVE ON STAGE
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: "Pretendard, sans-serif",
-                      fontWeight: 600,
-                      fontSize: 15,
-                      color: "#FFFFFF",
-                    }}
-                  >
-                    관객의 환호와 온기가 하나 되는 무대
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Quote 밑단 서브 캡션 */}
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, padding: "0 8px" }}>
-              <span style={{ width: 24, height: 1, backgroundColor: "#CBD5E1" }} />
-              <p
-                style={{
-                  fontFamily: "Nanum Myeongjo, serif",
-                  fontStyle: "italic",
-                  fontWeight: 600,
-                  fontSize: 14.5,
-                  color: "#374151",
-                  textAlign: "center",
-                  margin: 0,
-                  lineHeight: 1.6,
-                  letterSpacing: "-0.01em",
-                }}
-              >
-                “음악은 관객의 숨소리와 마주할 때 비로소 완성됩니다.”
-              </p>
-              <span style={{ width: 24, height: 1, backgroundColor: "#CBD5E1" }} />
-            </div>
+            />
           </div>
 
           {/* [우측] 흐르는 본문 에디토리얼 줄글 */}
-          <div style={{ paddingLeft: "8px" }}>
-            
+          <div>
+
             {/* 본문 상단 앵커링 라벨 */}
             <div
               style={{
@@ -174,12 +197,12 @@ export function AboutSection() {
                 marginBottom: 20,
               }}
             >
-              <span style={{ width: 20, height: 1.5, backgroundColor: "#1B7A63" }} />
+              <span style={{ width: 20, height: 2, backgroundColor: "#1B7A63" }} />
               <span
                 style={{
-                  fontFamily: "Nanum Myeongjo, serif",
+                  fontFamily: "Pretendard, sans-serif",
                   fontWeight: 700,
-                  fontSize: 12,
+                  fontSize: 13,
                   color: "#1B7A63",
                   letterSpacing: "2.5px",
                   textTransform: "uppercase",
@@ -189,36 +212,20 @@ export function AboutSection() {
               </span>
             </div>
 
-            {/* Paragraph 1 with Drop Cap (정) */}
+            {/* Paragraph 1 */}
             <p
               style={{
                 fontFamily: "Pretendard, sans-serif",
                 fontWeight: 400,
-                fontSize: 16.5,
+                fontSize: "clamp(17px, 1.35vw, 18.5px)",
                 color: "#2D3436",
-                lineHeight: 1.95,
+                lineHeight: 1.9,
                 letterSpacing: "-0.02em",
-                marginBottom: 22,
+                wordBreak: "keep-all",
+                marginBottom: 24,
               }}
             >
-              <span
-                style={{
-                  float: "left",
-                  fontFamily: "Nanum Myeongjo, serif",
-                  fontSize: 52,
-                  lineHeight: "44px",
-                  paddingTop: 4,
-                  paddingRight: 12,
-                  paddingBottom: 2,
-                  fontWeight: 700,
-                  color: "#1B7A63",
-                  display: "block",
-                }}
-              >
-                정
-              </span>
-              적을 깨는 첫 활의 떨림부터, 무대 위에서 연주자들이 나누는 작은 눈빛과 미소까지.
-              부디 앙상블의 연주는 단순히 악보를 읽는 시간에 그치지 않습니다.
+              정적을 깨는 첫 활의 떨림부터 무대 위에서 나누는 작은 눈빛과 미소까지, 부디 앙상블의 음악은 악보를 따라 흐르는 단순한 소리에 머물지 않습니다.
             </p>
 
             {/* Paragraph 2 */}
@@ -226,14 +233,15 @@ export function AboutSection() {
               style={{
                 fontFamily: "Pretendard, sans-serif",
                 fontWeight: 400,
-                fontSize: 16.5,
+                fontSize: "clamp(17px, 1.35vw, 18.5px)",
                 color: "#4B5563",
-                lineHeight: 1.95,
+                lineHeight: 1.9,
                 letterSpacing: "-0.02em",
-                marginBottom: 22,
+                wordBreak: "keep-all",
+                marginBottom: 24,
               }}
             >
-              2020년 첫 걸음을 뗀 이래, 웅장한 대형 페스티벌 무대부터 온기가 필요한 소박한 공간에 이르기까지 <strong style={{ color: "#05261D", fontWeight: 700 }}>500여 회가 넘는 현장</strong>에서 우리는 무대 위 순간을 만끽하고 청중과 함께 호흡했습니다.
+              2020년 창단 이래 <span style={{ color: "#1B7A63", fontWeight: 600, display: "inline-block", whiteSpace: "nowrap" }}>대형 페스티벌</span>부터 <span style={{ color: "#1B7A63", fontWeight: 600, display: "inline-block", whiteSpace: "nowrap" }}>프라이빗 웨딩</span>, <span style={{ color: "#1B7A63", fontWeight: 600, display: "inline-block", whiteSpace: "nowrap" }}>기업 VIP 행사</span>에 이르기까지 <strong style={{ color: "#05261D", fontWeight: 700, display: "inline-block", whiteSpace: "nowrap" }}>500여 회가 넘는 현장</strong>에서 청중과 호흡하며 공간에 꼭 맞는 이야기를 음악으로 완성해 왔습니다.
             </p>
 
             {/* Paragraph 3 */}
@@ -241,14 +249,15 @@ export function AboutSection() {
               style={{
                 fontFamily: "Pretendard, sans-serif",
                 fontWeight: 400,
-                fontSize: 16.5,
+                fontSize: "clamp(17px, 1.35vw, 18.5px)",
                 color: "#4B5563",
-                lineHeight: 1.95,
+                lineHeight: 1.9,
                 letterSpacing: "-0.02em",
-                marginBottom: 36,
+                wordBreak: "keep-all",
+                marginBottom: 38,
               }}
             >
-              엄숙한 클래식의 문턱을 넘어 눈을 맞추며 나누는 친근한 해설, 공간의 분위기를 고조시키는 맞춤형 울림. 연주자와 청중의 마음이 만나는 그 따뜻한 순간이야말로 부디 앙상블이 이어가는 진정한 음악 여정입니다.
+              클래식의 문턱을 낮추는 친근한 해설과 분위기를 채우는 맞춤형 선율로, <strong style={{ color: "#05261D", fontWeight: 700, display: "inline-block", whiteSpace: "nowrap" }}>6명의 전문 연주자와 작곡가</strong>가 오직 당신만을 위한 프로페셔널한 음악 경험을 선사합니다.
             </p>
 
             {/* [Minimal Inline Stats] 매거진 인라인 스탯 3종 */}

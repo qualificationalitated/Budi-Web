@@ -272,6 +272,10 @@ export default function App() {
             grid-template-columns: 1fr !important;
             gap: 40px !important;
           }
+          .about-reviews-grid {
+            grid-template-columns: 1fr !important;
+            gap: 16px !important;
+          }
         }
 
         .hidden-mobile { display: flex !important; }
