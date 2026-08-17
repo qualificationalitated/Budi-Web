@@ -244,15 +244,36 @@ export default function App() {
           scroll-snap-align: none; 
         }
 
-        /* 4. 아티스트 그리드 반응형 (데스크톱 3x2, 태블릿 2x3, 모바일 1x6) */
-        @media (max-width: 900px) {
+        /* 4. 아티스트 그리드 반응형 (데스크톱 3x2, 태블릿/모바일 2x3, 소형 모바일 1x6) */
+        @media (max-width: 768px) {
           .artists-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 16px !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .artists-grid {
+            grid-template-columns: 1fr !important;
+            gap: 16px !important;
+          }
+        }
+
+        /* 5. About 섹션 반응형 그리드 규칙 */
+        @media (max-width: 900px) {
+          .about-top-grid {
+            grid-template-columns: 1fr !important;
+            gap: 40px !important;
+          }
+          .why-budi-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .services-grid {
             grid-template-columns: repeat(2, 1fr) !important;
           }
         }
         @media (max-width: 600px) {
-          .artists-grid {
-            grid-template-columns: repeat(1, 1fr) !important;
+          .services-grid {
+            grid-template-columns: 1fr !important;
           }
         }
 
