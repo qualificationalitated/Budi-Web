@@ -258,22 +258,19 @@ export default function App() {
           }
         }
 
-        /* 5. About 섹션 반응형 그리드 규칙 */
+        /* 5. About 섹션 에디토리얼 반응형 그리드 규칙 */
         @media (max-width: 900px) {
-          .about-top-grid {
+          .about-gallery-row {
+            grid-template-columns: 1fr !important;
+            gap: 20px !important;
+          }
+          .about-sub-cut-a {
+            margin-top: 0 !important;
+            aspect-ratio: 16 / 9 !important;
+          }
+          .about-story-row {
             grid-template-columns: 1fr !important;
             gap: 40px !important;
-          }
-          .why-budi-grid {
-            grid-template-columns: 1fr !important;
-          }
-          .services-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
-          }
-        }
-        @media (max-width: 600px) {
-          .services-grid {
-            grid-template-columns: 1fr !important;
           }
         }
 
