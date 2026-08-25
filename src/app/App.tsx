@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router";
+import { Analytics } from "@vercel/analytics/react";
 import "../styles/fonts.css";
 import { GNB } from "./components/GNB";
 import { HeroSection } from "./components/HeroSection";
@@ -332,6 +333,7 @@ export default function App() {
           <Route path="/grill-me" element={<><GrillMePage /><Footer /></>} />
         )}
       </Routes>
+      <Analytics />
     </div>
   );
 }
