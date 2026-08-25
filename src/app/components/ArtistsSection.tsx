@@ -3,7 +3,7 @@ import { Music } from "lucide-react";
 const artists = [
   {
     name: "정호진",
-    nameEn: "Hojin Jeong",
+    nameEn: "Hojin Jung",
     instrument: "바이올린",
     instrumentEn: "VIOLIN",
     role: "바이올리니스트",
