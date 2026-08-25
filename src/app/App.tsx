@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 import "../styles/fonts.css";
 import { GNB } from "./components/GNB";
 import { HeroSection } from "./components/HeroSection";
@@ -334,6 +335,7 @@ export default function App() {
         )}
       </Routes>
       <Analytics />
+      <SpeedInsights />
     </div>
   );
 }
