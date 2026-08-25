@@ -7,9 +7,8 @@ export function AboutSection() {
     <section
       id="about"
       style={{
-        backgroundColor: "#FFFFFF",
+        backgroundColor: "#F7FAF9",
         padding: "110px 24px 120px",
-        borderTop: "1px solid #E6F2F0",
         position: "relative",
       }}
     >
@@ -95,14 +94,14 @@ export function AboutSection() {
             <div
               key={idx}
               style={{
-                backgroundColor: "#F9FBFA",
-                border: "1px solid #CCEDE6",
+                backgroundColor: "#FFFFFF",
+                border: "1px solid #D6ECE5",
                 borderRadius: 16,
                 padding: "24px 22px",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
-                boxShadow: "0 4px 16px rgba(10, 64, 48, 0.03)",
+                boxShadow: "0 4px 18px rgba(10, 64, 48, 0.04)",
               }}
             >
               <div>

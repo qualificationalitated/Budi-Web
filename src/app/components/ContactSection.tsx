@@ -21,9 +21,8 @@ export function ContactSection() {
     <section
       id="contact"
       style={{
-        backgroundColor: "#FFFFFF",
+        backgroundColor: "#F7FAF9",
         padding: "100px 24px",
-        borderTop: "1px solid #E6F2F0",
       }}
     >
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>

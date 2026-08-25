@@ -63,8 +63,7 @@ export function ArtistsSection() {
       id="artists"
       style={{
         backgroundColor: "#FFFFFF",
-        padding: "100px 24px",
-        borderTop: "1px solid #E6F2F0",
+        padding: "110px 24px 120px",
       }}
     >
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>

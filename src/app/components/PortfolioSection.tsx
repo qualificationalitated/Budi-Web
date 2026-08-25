@@ -51,7 +51,6 @@ export function PortfolioSection() {
       style={{
         backgroundColor: "#FFFFFF",
         padding: "100px 24px",
-        borderTop: "1px solid #E6F2F0",
       }}
     >
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
