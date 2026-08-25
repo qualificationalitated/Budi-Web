@@ -74,7 +74,7 @@ export function ContactSection() {
               margin: "0 auto",
             }}
           >
-            행사 규모, 장르, 예산에 관계없이 먼저 문의해 주세요. 맞춤형 제안을 드립니다.
+            행사 규모나 예산 걱정 없이, 언제든 편하게 문의해 주세요
           </p>
         </div>
 
@@ -270,29 +270,29 @@ export function ContactSection() {
               }}
             >
               {[
-                { 
-                  step: "01", 
+                {
+                  step: "01",
                   text: (
                     <span>
                       아래 <strong>'카카오톡 실시간 상담하기'</strong> 버튼 클릭
                     </span>
-                  ) 
+                  )
                 },
-                { 
-                  step: "02", 
+                {
+                  step: "02",
                   text: (
                     <span>
                       부디 앙상블 <strong>1:1 오픈채팅방</strong> 입장
                     </span>
-                  ) 
+                  )
                 },
-                { 
-                  step: "03", 
+                {
+                  step: "03",
                   text: (
                     <span style={{ color: "#05261D" }}>
                       <strong>연주 일정, 장소, 행사 형식, 희망 악기 구성 및 연주곡</strong> 전달 <span style={{ color: "#1B7A63", fontWeight: 700, fontSize: 15 }}>(필수)</span>
                     </span>
-                  ) 
+                  )
                 },
               ].map((s, idx) => (
                 <div key={idx} style={{ display: "flex", alignItems: "center", gap: 18 }}>
