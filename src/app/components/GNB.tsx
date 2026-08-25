@@ -9,7 +9,6 @@ const navLinks = [
   { id: "artists", label: "아티스트", href: "#artists" },
   { id: "portfolio", label: "포트폴리오", href: "#portfolio" },
   { id: "map", label: "공연 지도", href: "#map" },
-  { id: "contact", label: "문의", href: "#contact" },
 ].filter((link) => SECTION_CONFIG[link.id as keyof typeof SECTION_CONFIG]);
 
 export function GNB() {
