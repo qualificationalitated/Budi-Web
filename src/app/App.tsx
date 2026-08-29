@@ -208,7 +208,29 @@ export default function App() {
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        body { background-color: #FFFFFF !important; }
+        body {
+          background-color: #FFFFFF !important;
+          cursor: default;
+        }
+
+        /* 텍스트 영역 기본 커서 (I자 빔 대신 깔끔한 화살표 커서) */
+        p, h1, h2, h3, h4, h5, h6, span, div, li, ul, ol, blockquote, figcaption, header, section, article, footer, aside, main {
+          cursor: default;
+        }
+
+        /* 클릭 가능한 모든 인터랙티브 요소는 즉시 pointer 커서 보장 */
+        button, a, select, summary, [role="button"], [tabindex]:not([tabindex="-1"]), .clickable, input[type="button"], input[type="submit"], input[type="reset"] {
+          cursor: pointer !important;
+        }
+
+        button *, a * {
+          cursor: pointer !important;
+        }
+
+        /* 실제 텍스트 입력창은 text 커서 유지 */
+        input[type="text"], input[type="email"], input[type="tel"], input[type="number"], input[type="search"], textarea {
+          cursor: text !important;
+        }
 
         /* 1. 전체를 감싸는 부모 컨테이너 */
         .scroll-container {

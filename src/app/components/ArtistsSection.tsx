@@ -135,7 +135,7 @@ export function ArtistsSection() {
               style={{
                 position: "relative",
                 overflow: "hidden",
-                cursor: "default",
+                cursor: "pointer",
                 aspectRatio: "3 / 4",
                 backgroundColor: "#F5F5F5",
                 borderRadius: 14,

@@ -156,8 +156,38 @@ export function ContactSection() {
                       lineHeight: 1.4,
                     }}
                   >
-                    {Array.isArray(item.value) ? (
-                      item.value.map((v, i) => <div key={i}>{v}</div>)
+                    {item.label === "이메일" ? (
+                      <a
+                        href={`mailto:${item.value}`}
+                        style={{
+                          color: "inherit",
+                          textDecoration: "none",
+                          cursor: "pointer",
+                          transition: "color 0.2s",
+                        }}
+                        onMouseEnter={(e) => ((e.target as HTMLElement).style.color = "#1B7A63")}
+                        onMouseLeave={(e) => ((e.target as HTMLElement).style.color = "#05261D")}
+                      >
+                        {item.value}
+                      </a>
+                    ) : item.label === "전화" && Array.isArray(item.value) ? (
+                      item.value.map((v, i) => (
+                        <div key={i}>
+                          <a
+                            href={`tel:${v.replace(/[^0-9]/g, "")}`}
+                            style={{
+                              color: "inherit",
+                              textDecoration: "none",
+                              cursor: "pointer",
+                              transition: "color 0.2s",
+                            }}
+                            onMouseEnter={(e) => ((e.target as HTMLElement).style.color = "#1B7A63")}
+                            onMouseLeave={(e) => ((e.target as HTMLElement).style.color = "#05261D")}
+                          >
+                            {v}
+                          </a>
+                        </div>
+                      ))
                     ) : (
                       item.value
                     )}

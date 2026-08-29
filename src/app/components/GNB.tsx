@@ -105,7 +105,7 @@ export function GNB() {
         <Link
           to="/"
           onClick={handleLogoClick}
-          style={{ display: "flex", alignItems: "center", gap: 12, textDecoration: "none" }}
+          style={{ display: "flex", alignItems: "center", gap: 12, textDecoration: "none", cursor: "pointer" }}
         >
           <img
             src="/images/logo/budi_logo.webp"
@@ -127,6 +127,7 @@ export function GNB() {
               color: isDark ? "#FFFFFF" : "#2D3436",
               letterSpacing: "-0.3px",
               transition: "color 0.3s",
+              cursor: "pointer",
             }}
           >
             Budi Ensemble
@@ -147,6 +148,7 @@ export function GNB() {
                 color: isDark ? "rgba(255,255,255,0.8)" : "#636e72",
                 textDecoration: "none",
                 transition: "color 0.2s",
+                cursor: "pointer",
               }}
               onMouseEnter={(e) =>
                 ((e.target as HTMLAnchorElement).style.color = "#1B7A63")
@@ -177,6 +179,7 @@ export function GNB() {
                 textDecoration: "none",
                 transition: "opacity 0.2s",
                 letterSpacing: "-0.2px",
+                cursor: "pointer",
               }}
               onMouseEnter={(e) =>
                 ((e.target as HTMLAnchorElement).style.opacity = "0.85")
@@ -233,6 +236,7 @@ export function GNB() {
                 fontSize: 16,
                 color: isDark ? "rgba(255,255,255,0.85)" : "#2D3436",
                 textDecoration: "none",
+                cursor: "pointer",
               }}
             >
               {link.label}
@@ -255,6 +259,7 @@ export function GNB() {
                 borderRadius: 8,
                 textDecoration: "none",
                 textAlign: "center",
+                cursor: "pointer",
               }}
             >
               공연 섭외 문의

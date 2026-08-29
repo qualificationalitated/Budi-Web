@@ -142,6 +142,7 @@ export function Footer() {
                     color: "rgba(255,255,255,0.5)",
                     textDecoration: "none",
                     transition: "color 0.2s",
+                    cursor: "pointer",
                   }}
                   onMouseEnter={(e) =>
                     ((e.target as HTMLAnchorElement).style.color = "#F2AF29")
@@ -170,12 +171,10 @@ export function Footer() {
             >
               연락처
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
               {[
-                { label: "Email", value: CONTACT_INFO.email },
-                { label: "Tel", value: CONTACT_INFO.phone },
-                { label: "Business Reg.", value: CONTACT_INFO.businessNumber },
-                { label: "Hours", value: CONTACT_INFO.hours },
+                { label: "EMAIL", value: CONTACT_INFO.email },
+                { label: "PHONE", value: CONTACT_INFO.phone },
               ].map((c) => (
                 <div key={c.label}>
                   <div
@@ -199,8 +198,28 @@ export function Footer() {
                       lineHeight: 1.5,
                     }}
                   >
-                    {Array.isArray(c.value) ? (
-                      c.value.map((v, i) => <div key={i}>{v}</div>)
+                    {c.label === "EMAIL" ? (
+                      <a
+                        href={`mailto:${c.value}`}
+                        style={{ color: "inherit", textDecoration: "none", cursor: "pointer", transition: "color 0.2s" }}
+                        onMouseEnter={(e) => ((e.target as HTMLElement).style.color = "#F2AF29")}
+                        onMouseLeave={(e) => ((e.target as HTMLElement).style.color = "rgba(255,255,255,0.55)")}
+                      >
+                        {c.value}
+                      </a>
+                    ) : c.label === "PHONE" && Array.isArray(c.value) ? (
+                      c.value.map((v, i) => (
+                        <div key={i}>
+                          <a
+                            href={`tel:${v.replace(/[^0-9]/g, "")}`}
+                            style={{ color: "inherit", textDecoration: "none", cursor: "pointer", transition: "color 0.2s" }}
+                            onMouseEnter={(e) => ((e.target as HTMLElement).style.color = "#F2AF29")}
+                            onMouseLeave={(e) => ((e.target as HTMLElement).style.color = "rgba(255,255,255,0.55)")}
+                          >
+                            {v}
+                          </a>
+                        </div>
+                      ))
                     ) : (
                       c.value
                     )}
