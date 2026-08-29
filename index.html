@@ -2,6 +2,13 @@
 <!DOCTYPE html>
 <html lang="ko">
   <head>
+    <!-- Instant Domain Redirect (Dual Protection) -->
+    <script>
+      if (window.location.hostname === 'budiensemble.vercel.app') {
+        window.location.replace('https://budiensemble.com' + window.location.pathname + window.location.search);
+      }
+    </script>
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>부디 앙상블 | Budi Ensemble - 공간의 품격을 완성하는 클래식 라이브</title>
