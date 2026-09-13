@@ -13,14 +13,14 @@ import { Footer } from "./components/Footer";
 import { GrillMePage } from "./components/GrillMePage";
 import { ImageCarousel } from "./components/ImageCarousel";
 import { SECTION_CONFIG } from "./sectionConfig";
-import { BoardListPage } from "./components/board/BoardListPage";
-import { BoardDetailPage } from "./components/board/BoardDetailPage";
-import { AdminLoginPage } from "./components/admin/AdminLoginPage";
-import { AdminDashboard } from "./components/admin/AdminDashboard";
-import { PostEditor } from "./components/admin/PostEditor";
-
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import { useLocation } from "react-router";
+
+const BoardListPage = lazy(() => import("./components/board/BoardListPage").then(m => ({ default: m.BoardListPage })));
+const BoardDetailPage = lazy(() => import("./components/board/BoardDetailPage").then(m => ({ default: m.BoardDetailPage })));
+const AdminLoginPage = lazy(() => import("./components/admin/AdminLoginPage").then(m => ({ default: m.AdminLoginPage })));
+const AdminDashboard = lazy(() => import("./components/admin/AdminDashboard").then(m => ({ default: m.AdminDashboard })));
+const PostEditor = lazy(() => import("./components/admin/PostEditor").then(m => ({ default: m.PostEditor })));
 
 function LandingPage() {
   const location = useLocation();
@@ -358,27 +358,29 @@ export default function App() {
       `}</style>
 
       {!isAdminRoute && <GNB />}
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        {SECTION_CONFIG.board ? (
-          <>
-            <Route path="/board" element={<BoardListPage />} />
-            <Route path="/board/:id" element={<BoardDetailPage />} />
-          </>
-        ) : (
-          <>
-            <Route path="/board" element={<Navigate to="/" replace />} />
-            <Route path="/board/:id" element={<Navigate to="/" replace />} />
-          </>
-        )}
-        <Route path="/admin" element={<AdminLoginPage />} />
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        <Route path="/admin/new" element={<PostEditor />} />
-        <Route path="/admin/edit/:id" element={<PostEditor />} />
-        {SECTION_CONFIG.grillMe && (
-          <Route path="/grill-me" element={<><GrillMePage /><Footer /></>} />
-        )}
-      </Routes>
+      <Suspense fallback={null}>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          {SECTION_CONFIG.board ? (
+            <>
+              <Route path="/board" element={<BoardListPage />} />
+              <Route path="/board/:id" element={<BoardDetailPage />} />
+            </>
+          ) : (
+            <>
+              <Route path="/board" element={<Navigate to="/" replace />} />
+              <Route path="/board/:id" element={<Navigate to="/" replace />} />
+            </>
+          )}
+          <Route path="/admin" element={<AdminLoginPage />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/new" element={<PostEditor />} />
+          <Route path="/admin/edit/:id" element={<PostEditor />} />
+          {SECTION_CONFIG.grillMe && (
+            <Route path="/grill-me" element={<><GrillMePage /><Footer /></>} />
+          )}
+        </Routes>
+      </Suspense>
       <Analytics />
       <SpeedInsights />
     </div>
