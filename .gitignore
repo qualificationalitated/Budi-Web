@@ -1,4 +1,51 @@
-# Logs
+# ─── Environment & Secrets (보안 및 환경 변수) ──────────
+.env
+.env.*
+*.env
+!.env.example
+
+# Private Keys & Certificates (보안 키 및 인증서)
+*.pem
+*.key
+*.cert
+*.crt
+*.pfx
+*.p12
+
+# Database Dumps & Local Backups (DB 덤프 및 백업)
+*.sql.bak
+*.dump
+*.sqlite
+*.sqlite3
+.supabase/
+
+# ─── Internal Docs & AI Guidelines (DB 구조 문서 및 AI 지시사항) ───
+docs/
+guidelines/
+prompts/
+*.prompt.md
+.agents/
+.gemini/
+.cursor/
+.windsurf/
+CLAUDE.md
+AGENTS.md
+GEMINI.md
+
+# ─── Dependencies (의존성 패키지) ────────────────────────
+node_modules/
+jspm_packages/
+.pnpm-store/
+
+# ─── Production Builds & Caches (빌드 산출물 및 캐시) ────
+dist/
+dist-ssr/
+.vercel
+.cache/
+*.tsbuildinfo
+.eslintcache
+
+# ─── Logs & Runtime Data (로그 및 런타임 데이터) ─────────
 logs
 *.log
 npm-debug.log*
@@ -6,38 +53,27 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
-
-# Diagnostic reports
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
-
-# Runtime data
 pids
 *.pid
 *.seed
 *.pid.lock
 
-# Coverage directory used by tools like istanbul
-coverage
+# ─── Test Coverage (테스트 커버리지) ─────────────────────
+coverage/
 *.lcov
+.nyc_output/
 
-# nyc test coverage
-.nyc_output
+# ─── OS Metadata & Files (운영체제 임시 파일) ────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
-# dependency directories
-node_modules/
-jspm_packages/
-
-# TypeScript cache
-*.tsbuildinfo
-
-# Optional eslint cache
-.eslintcache
-
-# Output directory files
-dist/
-dist-ssr/
-
-# IDEs and editors
+# ─── IDE & Editor Configs (에디터 설정) ──────────────────
 .idea/
 .vscode/
 *.suo
@@ -45,14 +81,6 @@ dist-ssr/
 *.njsproj
 *.sln
 *.sw?
-
-# OS metadata
-.DS_Store
-Thumbs.db
-
-# Local env files
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+*.sublime-project
+*.sublime-workspace
+*~

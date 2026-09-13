@@ -9,6 +9,7 @@ export const SECTION_CONFIG = {
   about: true,
   gallery: false, // Photo Gallery (ImageCarousel)
   artists: true,
+  board: false, // Concert schedule bulletin board (/board) - 임시 비공개
   portfolio: false, // 작업 진행 안됨
   map: false, // 작업 진행 안됨
   contact: true, // 작업 진행 안됨

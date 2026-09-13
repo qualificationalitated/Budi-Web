@@ -7,6 +7,7 @@ import { SECTION_CONFIG } from "../sectionConfig";
 const navLinks = [
   { id: "about", label: "소개", href: "#about" },
   { id: "artists", label: "아티스트", href: "#artists" },
+  { id: "board", label: "공연 일정", href: "/board" },
   { id: "portfolio", label: "포트폴리오", href: "#portfolio" },
   { id: "map", label: "공연 지도", href: "#map" },
 ].filter((link) => SECTION_CONFIG[link.id as keyof typeof SECTION_CONFIG]);
@@ -27,7 +28,7 @@ export function GNB() {
     return () => window.removeEventListener("scroll", onScroll, true);
   }, []);
 
-  const isDark = scrolled;
+  const isDark = scrolled || location.pathname !== "/";
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     if (href.startsWith("#")) {
@@ -52,6 +53,9 @@ export function GNB() {
           setTimeout(onScrollEnd, 1000);
         }
       }
+    } else {
+      e.preventDefault();
+      navigate(href);
     }
   };
 

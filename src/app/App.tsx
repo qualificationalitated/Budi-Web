@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router";
+import { Routes, Route, Navigate } from "react-router";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import "../styles/fonts.css";
@@ -13,6 +13,11 @@ import { Footer } from "./components/Footer";
 import { GrillMePage } from "./components/GrillMePage";
 import { ImageCarousel } from "./components/ImageCarousel";
 import { SECTION_CONFIG } from "./sectionConfig";
+import { BoardListPage } from "./components/board/BoardListPage";
+import { BoardDetailPage } from "./components/board/BoardDetailPage";
+import { AdminLoginPage } from "./components/admin/AdminLoginPage";
+import { AdminDashboard } from "./components/admin/AdminDashboard";
+import { PostEditor } from "./components/admin/PostEditor";
 
 import { useEffect } from "react";
 import { useLocation } from "react-router";
@@ -196,6 +201,9 @@ function LandingPage() {
 }
 
 export default function App() {
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith("/admin");
+
   return (
     <div
       style={{
@@ -349,9 +357,24 @@ export default function App() {
         }
       `}</style>
 
-      <GNB />
+      {!isAdminRoute && <GNB />}
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        {SECTION_CONFIG.board ? (
+          <>
+            <Route path="/board" element={<BoardListPage />} />
+            <Route path="/board/:id" element={<BoardDetailPage />} />
+          </>
+        ) : (
+          <>
+            <Route path="/board" element={<Navigate to="/" replace />} />
+            <Route path="/board/:id" element={<Navigate to="/" replace />} />
+          </>
+        )}
+        <Route path="/admin" element={<AdminLoginPage />} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin/new" element={<PostEditor />} />
+        <Route path="/admin/edit/:id" element={<PostEditor />} />
         {SECTION_CONFIG.grillMe && (
           <Route path="/grill-me" element={<><GrillMePage /><Footer /></>} />
         )}
