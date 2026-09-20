@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate, Link } from "react-router";
-import { ArrowLeft, Calendar, MapPin, MessageCircle, Share2, Sparkles, Loader2, Music2 } from "lucide-react";
+import { useParams, useNavigate } from "react-router";
+import { ArrowLeft, Calendar, MapPin, MessageCircle, Share2, Music2, Loader2, Check, ExternalLink } from "lucide-react";
 import { getPostById, ConcertPost } from "../../../lib/boardApi";
 import { Footer } from "../Footer";
 
@@ -58,59 +58,124 @@ export function BoardDetailPage() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", backgroundColor: "#05261D", color: "#FDFCFA", display: "flex", flexDirection: "column" }}>
-      {/* ─── Back Navigation Header ─── */}
-      <div
+    <div
+      style={{
+        minHeight: "100vh",
+        backgroundColor: "#FFFFFF",
+        color: "#2D3436",
+        display: "flex",
+        flexDirection: "column",
+        fontFamily: "Pretendard, -apple-system, sans-serif",
+      }}
+    >
+      <style>{`
+        .detail-container-grid {
+          display: grid;
+          grid-template-columns: minmax(0, 1.25fr) minmax(280px, 380px);
+          gap: 64px;
+          align-items: start;
+        }
+
+        .detail-sticky-panel {
+          position: sticky;
+          top: 100px;
+        }
+
+        @media (max-width: 920px) {
+          .detail-container-grid {
+            grid-template-columns: 1fr;
+            gap: 36px;
+          }
+          .detail-right-col {
+            order: -1; /* 모바일에서는 포스터 및 액션이 상단에 먼저 노출 */
+            max-width: 420px;
+            margin: 0 auto;
+            width: 100%;
+          }
+          .detail-sticky-panel {
+            position: static;
+          }
+        }
+
+        .back-link-btn {
+          cursor: pointer;
+          transition: color 0.2s ease;
+        }
+        .back-link-btn:hover {
+          color: #1B7A63 !important;
+        }
+        .back-link-btn:hover .back-arrow-icon {
+          transform: translateX(-3px);
+        }
+      `}</style>
+
+      {/* ─── Main Canvas ─── */}
+      <main
         style={{
-          paddingTop: 110,
-          paddingBottom: 20,
-          paddingLeft: 24,
-          paddingRight: 24,
+          flex: 1,
           maxWidth: 1100,
           width: "100%",
           margin: "0 auto",
+          padding: "120px 24px 100px",
         }}
       >
-        <button
-          onClick={() => navigate("/board")}
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 8,
-            padding: "8px 16px",
-            borderRadius: 8,
-            backgroundColor: "rgba(255,255,255,0.05)",
-            border: "1px solid rgba(242,175,41,0.2)",
-            color: "rgba(253,252,248,0.8)",
-            fontSize: 14,
-            cursor: "pointer",
-            transition: "all 0.2s ease",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = "rgba(242,175,41,0.12)";
-            e.currentTarget.style.color = "#F2AF29";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.05)";
-            e.currentTarget.style.color = "rgba(253,252,248,0.8)";
-          }}
-        >
-          <ArrowLeft size={16} />
-          <span>전체 공연 목록</span>
-        </button>
-      </div>
+        {/* ─── Back to Schedule Link ─── */}
+        <div style={{ marginBottom: 36 }}>
+          <button
+            type="button"
+            onClick={() => navigate("/board")}
+            className="back-link-btn"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              background: "none",
+              border: "none",
+              padding: 0,
+              color: "#636e72",
+              fontSize: 14.5,
+              fontWeight: 600,
+              fontFamily: "Pretendard, sans-serif",
+            }}
+          >
+            <ArrowLeft
+              size={17}
+              className="back-arrow-icon"
+              style={{ transition: "transform 0.2s ease" }}
+            />
+            <span>전체 공연 일정으로</span>
+          </button>
+        </div>
 
-      {/* ─── Main Content ─── */}
-      <main style={{ flex: 1, maxWidth: 1100, width: "100%", margin: "0 auto", padding: "0 24px 100px" }}>
         {loading ? (
           <div style={{ textAlign: "center", padding: "120px 20px" }}>
-            <Loader2 className="animate-spin" size={36} color="#F2AF29" style={{ margin: "0 auto 16px" }} />
-            <p style={{ color: "rgba(253,252,248,0.6)", fontSize: 15 }}>공연 정보를 불러오는 중입니다...</p>
+            <Loader2
+              className="animate-spin"
+              size={36}
+              color="#1B7A63"
+              style={{ margin: "0 auto 16px" }}
+            />
+            <p style={{ color: "#636e72", fontSize: 15, fontWeight: 500 }}>
+              공연 정보를 불러오는 중입니다...
+            </p>
           </div>
         ) : error || !post ? (
-          <div style={{ textAlign: "center", padding: "100px 20px" }}>
-            <p style={{ color: "#ff8b8b", fontSize: 16, marginBottom: 20 }}>{error || "공연 정보가 없습니다."}</p>
+          <div
+            style={{
+              textAlign: "center",
+              padding: "80px 24px",
+              backgroundColor: "#F7FAF9",
+              borderRadius: 16,
+              border: "1px solid rgba(0,0,0,0.06)",
+              maxWidth: 480,
+              margin: "40px auto",
+            }}
+          >
+            <p style={{ color: "#d63031", fontSize: 16, marginBottom: 20, fontWeight: 500 }}>
+              {error || "공연 정보가 없습니다."}
+            </p>
             <button
+              type="button"
               onClick={() => navigate("/board")}
               style={{
                 padding: "10px 24px",
@@ -119,7 +184,8 @@ export function BoardDetailPage() {
                 color: "#FFFFFF",
                 border: "none",
                 cursor: "pointer",
-                fontWeight: 500,
+                fontWeight: 600,
+                fontSize: 14,
               }}
             >
               목록으로 돌아가기
@@ -127,278 +193,354 @@ export function BoardDetailPage() {
           </div>
         ) : (
           <div>
-            {/* ─── Grid: Poster (Left) + Key Info (Right) ─── */}
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-                gap: 48,
-                marginBottom: 60,
-                alignItems: "start",
-              }}
-            >
-              {/* Poster Column */}
-              <div
-                style={{
-                  borderRadius: 16,
-                  overflow: "hidden",
-                  border: "1px solid rgba(242,175,41,0.25)",
-                  backgroundColor: "#02120e",
-                  boxShadow: "0 20px 50px rgba(0,0,0,0.5)",
-                }}
-              >
-                {post.poster_url ? (
-                  <img
-                    src={post.poster_url}
-                    alt={post.title}
-                    style={{
-                      width: "100%",
-                      height: "auto",
-                      display: "block",
-                      objectFit: "contain",
-                    }}
-                  />
-                ) : (
-                  <div
-                    style={{
-                      height: 480,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      color: "rgba(242,175,41,0.3)",
-                    }}
-                  >
-                    <Music2 size={80} />
-                  </div>
-                )}
-              </div>
-
-              {/* Info Column */}
-              <div style={{ display: "flex", flexDirection: "column" }}>
-                <div
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 6,
-                    padding: "4px 12px",
-                    borderRadius: 20,
-                    backgroundColor: "rgba(242,175,41,0.1)",
-                    border: "1px solid rgba(242,175,41,0.3)",
-                    color: "#F2AF29",
-                    fontSize: 12,
-                    fontWeight: 600,
-                    letterSpacing: "0.06em",
-                    textTransform: "uppercase",
-                    width: "fit-content",
-                    marginBottom: 16,
-                  }}
-                >
-                  <Sparkles size={13} />
-                  <span>Official Performance</span>
-                </div>
-
+            {/* ─── 2-Column Responsive Layout ─── */}
+            <div className="detail-container-grid">
+              {/* ─── Left Column: Title, Metadata Specs & Content ─── */}
+              <div className="detail-left-col">
+                {/* Concert Main Title */}
                 <h1
                   style={{
-                    fontFamily: "'Noto Serif KR', serif",
-                    fontSize: "clamp(1.75rem, 3.2vw, 2.4rem)",
-                    fontWeight: 700,
-                    lineHeight: 1.35,
-                    color: "#FFFFFF",
-                    marginBottom: 24,
+                    fontFamily: "Pretendard, sans-serif",
+                    fontSize: "clamp(28px, 3.6vw, 42px)",
+                    fontWeight: 800,
+                    lineHeight: 1.28,
+                    color: "#05261D",
+                    letterSpacing: "-0.8px",
+                    marginTop: 0,
+                    marginBottom: 22,
                     wordBreak: "keep-all",
                   }}
                 >
                   {post.title}
                 </h1>
 
-                {/* Metadata Card */}
-                <div
+                {/* Specifications List (DB 존재하는 실제 데이터만 노출: 일시, 장소) */}
+                <dl
                   style={{
-                    backgroundColor: "rgba(255,255,255,0.03)",
-                    border: "1px solid rgba(242,175,41,0.15)",
-                    borderRadius: 12,
-                    padding: "20px 24px",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 16,
-                    marginBottom: 28,
+                    margin: 0,
+                    padding: 0,
+                    borderTop: "1.5px solid #05261D",
                   }}
                 >
-                  <div style={{ display: "flex", alignItems: "flex-start", gap: 14 }}>
-                    <div
+                  {/* 공연 일시 */}
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "baseline",
+                      padding: "13px 0",
+                      borderBottom: "1px solid rgba(0, 0, 0, 0.08)",
+                      gap: 18,
+                    }}
+                  >
+                    <dt
                       style={{
-                        width: 36,
-                        height: 36,
-                        borderRadius: 8,
-                        backgroundColor: "rgba(242,175,41,0.12)",
+                        width: 80,
+                        flexShrink: 0,
+                        fontSize: 13.5,
+                        fontWeight: 600,
+                        color: "#8395a7",
+                        fontFamily: "Pretendard, sans-serif",
                         display: "flex",
                         alignItems: "center",
-                        justifyContent: "center",
-                        color: "#F2AF29",
-                        flexShrink: 0,
+                        gap: 6,
                       }}
                     >
-                      <Calendar size={18} />
-                    </div>
-                    <div>
-                      <div style={{ fontSize: 12, color: "rgba(253,252,248,0.5)", marginBottom: 2 }}>일시</div>
-                      <div style={{ fontSize: 15, fontWeight: 600, color: "#FFFFFF" }}>{post.concert_date}</div>
-                    </div>
-                  </div>
-
-                  <div style={{ display: "flex", alignItems: "flex-start", gap: 14 }}>
-                    <div
+                      <Calendar size={15} style={{ color: "#1B7A63" }} />
+                      <span>공연 일시</span>
+                    </dt>
+                    <dd
                       style={{
-                        width: 36,
-                        height: 36,
-                        borderRadius: 8,
-                        backgroundColor: "rgba(27,122,99,0.2)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        color: "#1B7A63",
-                        flexShrink: 0,
-                      }}
-                    >
-                      <MapPin size={18} />
-                    </div>
-                    <div>
-                      <div style={{ fontSize: 12, color: "rgba(253,252,248,0.5)", marginBottom: 2 }}>장소</div>
-                      <div style={{ fontSize: 15, fontWeight: 600, color: "#FFFFFF" }}>{post.venue}</div>
-                    </div>
-                  </div>
-
-                  <div style={{ display: "flex", alignItems: "flex-start", gap: 14 }}>
-                    <div
-                      style={{
-                        width: 36,
-                        height: 36,
-                        borderRadius: 8,
-                        backgroundColor: "rgba(255,255,255,0.06)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        color: "#FDFCFA",
-                        flexShrink: 0,
-                      }}
-                    >
-                      <Music2 size={18} />
-                    </div>
-                    <div>
-                      <div style={{ fontSize: 12, color: "rgba(253,252,248,0.5)", marginBottom: 2 }}>주최 / 연주</div>
-                      <div style={{ fontSize: 15, fontWeight: 600, color: "#FFFFFF" }}>부디 앙상블 (Budi Ensemble)</div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Action Buttons */}
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
-                  {post.kakao_link && (
-                    <a
-                      href={post.kakao_link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        flex: "1 1 200px",
-                        display: "inline-flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        gap: 8,
-                        padding: "14px 24px",
-                        borderRadius: 10,
-                        backgroundColor: "#FEE500",
-                        color: "#000000",
+                        margin: 0,
+                        fontSize: 15.5,
                         fontWeight: 700,
-                        fontSize: 15,
-                        textDecoration: "none",
-                        transition: "transform 0.2s ease, box-shadow 0.2s ease",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.transform = "translateY(-2px)";
-                        e.currentTarget.style.boxShadow = "0 8px 20px rgba(254,229,0,0.3)";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.transform = "translateY(0)";
-                        e.currentTarget.style.boxShadow = "none";
+                        color: "#05261D",
+                        fontFamily: "Pretendard, sans-serif",
                       }}
                     >
-                      <MessageCircle size={18} fill="#000000" />
-                      <span>카카오톡 예매 / 문의</span>
-                    </a>
-                  )}
+                      {post.concert_date}
+                    </dd>
+                  </div>
 
+                  {/* 공연 장소 */}
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "baseline",
+                      padding: "13px 0",
+                      borderBottom: "1px solid rgba(0, 0, 0, 0.08)",
+                      gap: 18,
+                    }}
+                  >
+                    <dt
+                      style={{
+                        width: 80,
+                        flexShrink: 0,
+                        fontSize: 13.5,
+                        fontWeight: 600,
+                        color: "#8395a7",
+                        fontFamily: "Pretendard, sans-serif",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 6,
+                      }}
+                    >
+                      <MapPin size={15} style={{ color: "#1B7A63" }} />
+                      <span>공연 장소</span>
+                    </dt>
+                    <dd
+                      style={{
+                        margin: 0,
+                        fontSize: 15.5,
+                        fontWeight: 700,
+                        color: "#05261D",
+                        fontFamily: "Pretendard, sans-serif",
+                      }}
+                    >
+                      {post.venue}
+                    </dd>
+                  </div>
+                </dl>
+
+                {/* 공연 소개 (Introduction & Program Notes) */}
+                {post.content && (
+                  <section
+                    style={{
+                      marginTop: 36,
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "baseline",
+                        gap: 10,
+                        marginBottom: 16,
+                      }}
+                    >
+                      <h2
+                        style={{
+                          fontFamily: "Pretendard, sans-serif",
+                          fontSize: 19,
+                          fontWeight: 800,
+                          color: "#05261D",
+                          letterSpacing: "-0.5px",
+                          margin: 0,
+                        }}
+                      >
+                        공연 소개
+                      </h2>
+                      <span
+                        style={{
+                          fontFamily: "Pretendard, sans-serif",
+                          fontSize: 12.5,
+                          color: "#8395a7",
+                          fontWeight: 600,
+                          letterSpacing: "1px",
+                          textTransform: "uppercase",
+                        }}
+                      >
+                        ABOUT
+                      </span>
+                    </div>
+
+                    {/* Text Content (Open Typography) */}
+                    <div
+                      style={{
+                        fontFamily: "Pretendard, sans-serif",
+                        fontSize: 15.5,
+                        lineHeight: 1.85,
+                        color: "#2D3436",
+                        whiteSpace: "pre-line",
+                        wordBreak: "keep-all",
+                      }}
+                    >
+                      {post.content}
+                    </div>
+                  </section>
+                )}
+
+                {/* 전체 목록 돌아가기 버튼 (왼쪽 콘텐츠 하단) */}
+                <div
+                  style={{
+                    marginTop: 64,
+                    paddingTop: 28,
+                    borderTop: "1px solid rgba(0, 0, 0, 0.08)",
+                  }}
+                >
                   <button
-                    onClick={handleShare}
+                    type="button"
+                    onClick={() => navigate("/board")}
+                    className="back-link-btn"
                     style={{
                       display: "inline-flex",
                       alignItems: "center",
-                      justifyContent: "center",
                       gap: 8,
-                      padding: "14px 20px",
-                      borderRadius: 10,
-                      backgroundColor: "rgba(255,255,255,0.06)",
-                      border: "1px solid rgba(242,175,41,0.25)",
-                      color: "#FDFCFA",
-                      fontWeight: 600,
+                      padding: "9px 20px",
+                      borderRadius: 9999,
+                      backgroundColor: "#FFFFFF",
+                      border: "1px solid rgba(0, 0, 0, 0.12)",
+                      color: "#05261D",
                       fontSize: 14,
+                      fontWeight: 600,
                       cursor: "pointer",
                       transition: "all 0.2s ease",
+                      fontFamily: "Pretendard, sans-serif",
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = "rgba(242,175,41,0.15)";
-                      e.currentTarget.style.color = "#F2AF29";
+                      e.currentTarget.style.backgroundColor = "#F4F6F5";
+                      e.currentTarget.style.borderColor = "#1B7A63";
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.06)";
-                      e.currentTarget.style.color = "#FDFCFA";
+                      e.currentTarget.style.backgroundColor = "#FFFFFF";
+                      e.currentTarget.style.borderColor = "rgba(0, 0, 0, 0.12)";
                     }}
                   >
-                    <Share2 size={16} />
-                    <span>{copied ? "링크 복사됨! ✓" : "공연 공유"}</span>
+                    <ArrowLeft size={16} />
+                    <span>전체 공연 목록으로 돌아가기</span>
                   </button>
                 </div>
               </div>
-            </div>
 
-            {/* ─── Detailed Content / Description ─── */}
-            <div
-              style={{
-                backgroundColor: "rgba(255,255,255,0.02)",
-                border: "1px solid rgba(242,175,41,0.15)",
-                borderRadius: 16,
-                padding: "36px 32px",
-              }}
-            >
-              <h3
-                style={{
-                  fontFamily: "'Noto Serif KR', serif",
-                  fontSize: 20,
-                  fontWeight: 700,
-                  color: "#F2AF29",
-                  marginBottom: 24,
-                  paddingBottom: 16,
-                  borderBottom: "1px solid rgba(242,175,41,0.15)",
-                }}
-              >
-                공연 소개
-              </h3>
+              {/* ─── Right Column: Poster Image & Action CTAs ─── */}
+              <div className="detail-right-col">
+                <div className="detail-sticky-panel">
+                  {/* Poster Frame */}
+                  <div
+                    style={{
+                      position: "relative",
+                      borderRadius: 10,
+                      overflow: "hidden",
+                      backgroundColor: "#F4F6F5",
+                      border: "1px solid rgba(0, 0, 0, 0.08)",
+                      boxShadow: "0 12px 32px rgba(0, 0, 0, 0.08)",
+                      marginBottom: 16,
+                    }}
+                  >
+                    {post.poster_url ? (
+                      <img
+                        src={post.poster_url}
+                        alt={post.title}
+                        style={{
+                          width: "100%",
+                          height: "auto",
+                          display: "block",
+                          objectFit: "contain",
+                        }}
+                      />
+                    ) : (
+                      <div
+                        style={{
+                          height: 420,
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          color: "rgba(27, 122, 99, 0.35)",
+                          gap: 12,
+                        }}
+                      >
+                        <Music2 size={54} />
+                        <span style={{ fontSize: 13, color: "#8395a7", fontWeight: 500 }}>
+                          Budi Ensemble Poster
+                        </span>
+                      </div>
+                    )}
+                  </div>
 
-              <div
-                style={{
-                  fontSize: 16,
-                  lineHeight: 1.85,
-                  color: "rgba(253,252,248,0.85)",
-                  whiteSpace: "pre-wrap",
-                  wordBreak: "keep-all",
-                }}
-              >
-                {post.content}
+                  {/* CTAs under Poster */}
+                  <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                    {/* 예매하기 버튼 (글 작성 시 링크가 입력되어 있을 때만 렌더링) */}
+                    {post.kakao_link && (
+                      <a
+                        href={post.kakao_link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: 8,
+                          width: "100%",
+                          padding: "14px 20px",
+                          borderRadius: 8,
+                          backgroundColor: post.kakao_link.includes("kakao") ? "#FEE500" : "#05261D",
+                          color: post.kakao_link.includes("kakao") ? "#000000" : "#FFFFFF",
+                          fontWeight: 700,
+                          fontSize: 15,
+                          textDecoration: "none",
+                          boxShadow: post.kakao_link.includes("kakao")
+                            ? "0 3px 10px rgba(0,0,0,0.06)"
+                            : "0 4px 14px rgba(5, 38, 29, 0.16)",
+                          transition: "all 0.2s ease",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.transform = "translateY(-1px)";
+                          if (post.kakao_link?.includes("kakao")) {
+                            e.currentTarget.style.boxShadow = "0 6px 18px rgba(254, 229, 0, 0.35)";
+                          } else {
+                            e.currentTarget.style.backgroundColor = "#1B7A63";
+                          }
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.transform = "translateY(0)";
+                          if (post.kakao_link?.includes("kakao")) {
+                            e.currentTarget.style.boxShadow = "0 3px 10px rgba(0,0,0,0.06)";
+                          } else {
+                            e.currentTarget.style.backgroundColor = "#05261D";
+                          }
+                        }}
+                      >
+                        {post.kakao_link.includes("kakao") ? (
+                          <MessageCircle size={18} fill="#000000" />
+                        ) : (
+                          <ExternalLink size={18} />
+                        )}
+                        <span>
+                          {post.kakao_link.includes("kakao") ? "카카오톡 예매 / 문의하기" : "공연 예매 / 문의하기"}
+                        </span>
+                      </a>
+                    )}
+
+                    {/* 공연 링크 공유하기 버튼 */}
+                    <button
+                      type="button"
+                      onClick={handleShare}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: 8,
+                        width: "100%",
+                        padding: "12px 20px",
+                        borderRadius: 8,
+                        backgroundColor: "#FFFFFF",
+                        border: "1px solid rgba(0, 0, 0, 0.12)",
+                        color: copied ? "#1B7A63" : "#2D3436",
+                        fontWeight: 600,
+                        fontSize: 14,
+                        cursor: "pointer",
+                        transition: "all 0.2s ease",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = "#F4F6F5";
+                        e.currentTarget.style.borderColor = "#1B7A63";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = "#FFFFFF";
+                        e.currentTarget.style.borderColor = "rgba(0, 0, 0, 0.12)";
+                      }}
+                    >
+                      {copied ? <Check size={16} color="#1B7A63" /> : <Share2 size={16} />}
+                      <span>{copied ? "공연 링크가 복사되었습니다!" : "공연 링크 공유하기"}</span>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         )}
       </main>
 
+      {/* ─── Footer (메인 페이지와 동일) ─── */}
       <Footer />
     </div>
   );
