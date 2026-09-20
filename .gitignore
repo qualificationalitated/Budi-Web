@@ -23,6 +23,7 @@
 docs/
 guidelines/
 prompts/
+.ops/
 *.prompt.md
 .agents/
 .gemini/
