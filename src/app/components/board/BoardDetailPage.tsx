@@ -182,6 +182,16 @@ export function BoardDetailPage() {
     loadPost(id);
   }, [id]);
 
+  // 브라우저 탭 제목을 현재 공연명으로 동기화 (페이지 이탈 시 기본 제목 복원)
+  useEffect(() => {
+    if (!post) return;
+    const previousTitle = document.title;
+    document.title = `${post.title} | 부디 앙상블`;
+    return () => {
+      document.title = previousTitle;
+    };
+  }, [post]);
+
   async function loadPost(postId: string) {
     try {
       setLoading(true);

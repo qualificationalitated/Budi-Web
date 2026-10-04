@@ -50,6 +50,15 @@ export function BoardListPage() {
     loadPosts();
   }, []);
 
+  // 브라우저 탭 제목 설정 (페이지 이탈 시 기본 제목 복원)
+  useEffect(() => {
+    const previousTitle = document.title;
+    document.title = "공연 일정 | 부디 앙상블";
+    return () => {
+      document.title = previousTitle;
+    };
+  }, []);
+
   async function loadPosts() {
     try {
       setLoading(true);

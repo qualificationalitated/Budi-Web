@@ -14,7 +14,33 @@
   ],
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/sitemap.xml",
+      "destination": "/api/sitemap"
+    },
+    {
+      "source": "/board/:id",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*([Bb]ot|[Cc]rawler|[Ss]pider|Yeti|Daum|kakaotalk-scrap|facebookexternalhit|Google-InspectionTool|WhatsApp).*"
+        }
+      ],
+      "destination": "/api/board-seo?id=:id"
+    },
+    {
+      "source": "/board",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*([Bb]ot|[Cc]rawler|[Ss]pider|Yeti|Daum|kakaotalk-scrap|facebookexternalhit|Google-InspectionTool|WhatsApp).*"
+        }
+      ],
+      "destination": "/api/board-seo"
+    },
+    {
+      "source": "/((?!api/).*)",
       "destination": "/index.html"
     }
   ]
