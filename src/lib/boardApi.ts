@@ -44,6 +44,49 @@ export async function getPostById(id: string): Promise<ConcertPost | null> {
   return data;
 }
 
+export interface PostSibling {
+  id: string;
+  title: string;
+  concert_date: string;
+}
+
+// ─── 방문자용: 이전/다음 공연 내비게이션 조회 ─────────────────────
+export async function getPostSiblings(
+  currentPostId: string
+): Promise<{ prevPost: PostSibling | null; nextPost: PostSibling | null }> {
+  const { data, error } = await supabase
+    .from("concert_posts")
+    .select("id, title, concert_date, created_at")
+    .eq("is_published", true)
+    .order("created_at", { ascending: false });
+
+  if (error || !data) return { prevPost: null, nextPost: null };
+
+  const currentIndex = data.findIndex((p) => p.id === currentPostId);
+  if (currentIndex === -1) return { prevPost: null, nextPost: null };
+
+  // 게시판 목록 기준: 최신글(좌측, currentIndex - 1)은 다음 공연, 과거글(우측, currentIndex + 1)은 이전 공연
+  const nextPost =
+    currentIndex > 0
+      ? {
+          id: data[currentIndex - 1].id,
+          title: data[currentIndex - 1].title,
+          concert_date: data[currentIndex - 1].concert_date,
+        }
+      : null;
+
+  const prevPost =
+    currentIndex < data.length - 1
+      ? {
+          id: data[currentIndex + 1].id,
+          title: data[currentIndex + 1].title,
+          concert_date: data[currentIndex + 1].concert_date,
+        }
+      : null;
+
+  return { prevPost, nextPost };
+}
+
 // ─── 관리자용: 전체 게시글 CRUD ──────────────────────────────
 export async function getAllPosts(): Promise<ConcertPost[]> {
   const { data, error } = await supabase

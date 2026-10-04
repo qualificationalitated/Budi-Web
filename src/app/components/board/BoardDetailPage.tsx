@@ -1,13 +1,174 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
-import { ArrowLeft, Calendar, MapPin, MessageCircle, Share2, Music2, Loader2, Check, ExternalLink } from "lucide-react";
-import { getPostById, ConcertPost } from "../../../lib/boardApi";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Calendar,
+  CalendarPlus2,
+  MapPin,
+  MessageCircle,
+  Share2,
+  Music2,
+  Loader2,
+  Check,
+  ExternalLink,
+} from "lucide-react";
+import {
+  getPostById,
+  getPostSiblings,
+  ConcertPost,
+  PostSibling,
+} from "../../../lib/boardApi";
 import { Footer } from "../Footer";
+
+// ─── 헬퍼: 본문 내 URL 및 전화번호 자동 하이퍼링크 치환 ──────────────────
+function renderContentWithAutoLinks(content: string) {
+  if (!content) return null;
+
+  // URL(http, https) 및 한국 전화번호(010, 02, 053, 070 등) 감지 정규식
+  const combinedRegex =
+    /((?:https?:\/\/[^\s]+)|(?:01[016789]|0[2-6]\d|070)-\d{3,4}-\d{4})/g;
+
+  const parts = content.split(combinedRegex);
+
+  return parts.map((part, index) => {
+    if (!part) return null;
+
+    // 1. URL 패턴 감지
+    if (/^https?:\/\//i.test(part)) {
+      let cleanUrl = part;
+      let trailingPunct = "";
+      const punctMatch = cleanUrl.match(/[.,;:)]+$/);
+      if (punctMatch) {
+        trailingPunct = punctMatch[0];
+        cleanUrl = cleanUrl.slice(0, -trailingPunct.length);
+      }
+
+      return (
+        <span key={index}>
+          <a
+            href={cleanUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              color: "#1B7A63",
+              textDecoration: "underline",
+              textUnderlineOffset: "3px",
+              wordBreak: "break-all",
+              fontWeight: 500,
+              transition: "color 0.2s ease",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = "#05261D")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "#1B7A63")}
+          >
+            {cleanUrl}
+          </a>
+          {trailingPunct}
+        </span>
+      );
+    }
+
+    // 2. 전화번호 패턴 감지
+    if (/^(?:01[016789]|0[2-6]\d|070)-\d{3,4}-\d{4}$/.test(part)) {
+      return (
+        <a
+          key={index}
+          href={`tel:${part.replace(/-/g, "")}`}
+          style={{
+            color: "#1B7A63",
+            textDecoration: "underline",
+            textUnderlineOffset: "3px",
+            fontWeight: 600,
+            whiteSpace: "nowrap",
+          }}
+          title={`${part} 전화 걸기`}
+        >
+          {part}
+        </a>
+      );
+    }
+
+    return part;
+  });
+}
+
+// ─── 헬퍼: 공연 일시 기반 공연 상태 자동 계산 (예정 vs 종료) ───────────
+function getConcertStatus(rawDate: string): { isPast: boolean; label: string } {
+  if (!rawDate) return { isPast: false, label: "공연 예정" };
+
+  const match = rawDate.match(/(\d{4})[.-](\d{1,2})[.-](\d{1,2})/);
+  if (!match) return { isPast: false, label: "공연 예정" };
+
+  const year = parseInt(match[1], 10);
+  const month = parseInt(match[2], 10) - 1;
+  const day = parseInt(match[3], 10);
+
+  const timeMatch = rawDate.match(/(\d{1,2}):(\d{2})/);
+  const hour = timeMatch ? parseInt(timeMatch[1], 10) : 23;
+  const minute = timeMatch ? parseInt(timeMatch[2], 10) : 59;
+
+  const concertDateTime = new Date(year, month, day, hour, minute, 59);
+  const now = new Date();
+
+  const isPast = now.getTime() > concertDateTime.getTime();
+  return {
+    isPast,
+    label: isPast ? "공연 종료" : "공연 예정",
+  };
+}
+
+// ─── 헬퍼: 구글 캘린더 등록 Web Intent URL 생성 ────────────────────────
+function getGoogleCalendarUrl(post: ConcertPost): string {
+  const match = post.concert_date.match(/(\d{4})[.-](\d{1,2})[.-](\d{1,2})/);
+  let datesParam = "";
+
+  if (match) {
+    const y = match[1];
+    const m = match[2].padStart(2, "0");
+    const d = match[3].padStart(2, "0");
+    const timeMatch = post.concert_date.match(/(\d{1,2}):(\d{2})/);
+
+    if (timeMatch) {
+      const hour = parseInt(timeMatch[1], 10);
+      const min = parseInt(timeMatch[2], 10);
+      const startDt = new Date(
+        Date.UTC(parseInt(y, 10), parseInt(m, 10) - 1, parseInt(d, 10), hour - 9, min)
+      );
+      const endDt = new Date(startDt.getTime() + 2 * 60 * 60 * 1000);
+
+      const formatUtc = (date: Date) =>
+        date.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
+      datesParam = `${formatUtc(startDt)}/${formatUtc(endDt)}`;
+    } else {
+      const nextDay = new Date(
+        Date.UTC(parseInt(y, 10), parseInt(m, 10) - 1, parseInt(d, 10) + 1)
+      );
+      const y2 = nextDay.getUTCFullYear();
+      const m2 = String(nextDay.getUTCMonth() + 1).padStart(2, "0");
+      const d2 = String(nextDay.getUTCDate()).padStart(2, "0");
+      datesParam = `${y}${m}${d}/${y2}${m2}${d2}`;
+    }
+  }
+
+  const title = `[부디 앙상블] ${post.title}`;
+  const details = `${post.title}\n\n일시: ${post.concert_date}\n장소: ${post.venue}\n\n공식 안내: https://budiensemble.com/board/${post.id}`;
+  const location = post.venue;
+
+  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(
+    title
+  )}&dates=${datesParam}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(
+    location
+  )}`;
+}
 
 export function BoardDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [post, setPost] = useState<ConcertPost | null>(null);
+  const [siblings, setSiblings] = useState<{
+    prevPost: PostSibling | null;
+    nextPost: PostSibling | null;
+  }>({ prevPost: null, nextPost: null });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
@@ -25,11 +186,16 @@ export function BoardDetailPage() {
     try {
       setLoading(true);
       setError(null);
-      const data = await getPostById(postId);
+      const [data, sibs] = await Promise.all([
+        getPostById(postId),
+        getPostSiblings(postId),
+      ]);
+
       if (!data) {
         setError("해당 공연 정보를 찾을 수 없습니다.");
       } else {
         setPost(data);
+        setSiblings(sibs);
       }
     } catch (err: any) {
       console.error("게시글 상세 로딩 실패:", err);
@@ -56,6 +222,10 @@ export function BoardDetailPage() {
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
+
+  const statusInfo = post
+    ? getConcertStatus(post.concert_date)
+    : { isPast: false, label: "공연 예정" };
 
   return (
     <div
@@ -106,6 +276,19 @@ export function BoardDetailPage() {
         }
         .back-link-btn:hover .back-arrow-icon {
           transform: translateX(-3px);
+        }
+
+        .sibling-nav-card {
+          transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .sibling-nav-card:hover {
+          border-color: #1B7A63 !important;
+          background-color: #F0F7F4 !important;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 14px rgba(27, 122, 99, 0.08);
+        }
+        .sibling-nav-card:hover .sibling-title {
+          color: #1B7A63 !important;
         }
       `}</style>
 
@@ -197,6 +380,36 @@ export function BoardDetailPage() {
             <div className="detail-container-grid">
               {/* ─── Left Column: Title, Metadata Specs & Content ─── */}
               <div className="detail-left-col">
+                {/* 1. 공연 상태 뱃지 ([공연 예정] vs [공연 종료]) */}
+                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
+                  <span
+                    style={{
+                      padding: "4px 11px",
+                      borderRadius: 6,
+                      fontSize: 12.5,
+                      fontWeight: 700,
+                      fontFamily: "Pretendard, sans-serif",
+                      backgroundColor: statusInfo.isPast ? "#F1F5F9" : "#ECFDF5",
+                      color: statusInfo.isPast ? "#64748B" : "#065F46",
+                      border: `1px solid ${statusInfo.isPast ? "#E2E8F0" : "#A7F3D0"}`,
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 6,
+                      letterSpacing: "-0.2px",
+                    }}
+                  >
+                    <span
+                      style={{
+                        width: 6,
+                        height: 6,
+                        borderRadius: "50%",
+                        backgroundColor: statusInfo.isPast ? "#94A3B8" : "#10B981",
+                      }}
+                    />
+                    {statusInfo.label}
+                  </span>
+                </div>
+
                 {/* Concert Main Title */}
                 <h1
                   style={{
@@ -209,6 +422,7 @@ export function BoardDetailPage() {
                     marginTop: 0,
                     marginBottom: 22,
                     wordBreak: "keep-all",
+                    overflowWrap: "break-word",
                   }}
                 >
                   {post.title}
@@ -342,7 +556,7 @@ export function BoardDetailPage() {
                       </span>
                     </div>
 
-                    {/* Text Content (Open Typography) */}
+                    {/* Text Content with Auto-Linked URLs & Phone Numbers */}
                     <div
                       style={{
                         fontFamily: "Pretendard, sans-serif",
@@ -353,16 +567,171 @@ export function BoardDetailPage() {
                         wordBreak: "keep-all",
                       }}
                     >
-                      {post.content}
+                      {renderContentWithAutoLinks(post.content)}
                     </div>
                   </section>
                 )}
 
+                {/* ─── Previous / Next Concert Navigation (이전 / 다음 공연) ─── */}
+                <nav
+                  aria-label="이전 및 다음 공연 내비게이션"
+                  style={{
+                    marginTop: 56,
+                    paddingTop: 32,
+                    borderTop: "1.5px solid #05261D",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+                      gap: 16,
+                    }}
+                  >
+                    {/* 다음 공연 (게시판 목록 기준 좌측 / 최신 공연) */}
+                    {siblings.nextPost ? (
+                      <div
+                        onClick={() => navigate(`/board/${siblings.nextPost?.id}`)}
+                        className="sibling-nav-card"
+                        style={{
+                          padding: "16px 20px",
+                          borderRadius: 10,
+                          backgroundColor: "#F7FAF9",
+                          border: "1px solid rgba(0, 0, 0, 0.08)",
+                          cursor: "pointer",
+                          boxSizing: "border-box",
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 6,
+                            fontSize: 12,
+                            color: "#8395a7",
+                            marginBottom: 6,
+                            fontWeight: 600,
+                          }}
+                        >
+                          <ArrowLeft size={13} />
+                          <span>다음 공연</span>
+                        </div>
+                        <div
+                          className="sibling-title"
+                          style={{
+                            fontSize: 14.5,
+                            fontWeight: 700,
+                            color: "#05261D",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            display: "-webkit-box",
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: "vertical",
+                            wordBreak: "keep-all",
+                            overflowWrap: "break-word",
+                            lineHeight: 1.35,
+                            transition: "color 0.2s ease",
+                          }}
+                        >
+                          {siblings.nextPost.title}
+                        </div>
+                      </div>
+                    ) : (
+                      <div
+                        style={{
+                          padding: "16px 20px",
+                          borderRadius: 10,
+                          backgroundColor: "#FAFAFA",
+                          border: "1px dashed rgba(0, 0, 0, 0.08)",
+                          color: "#b2bec3",
+                          fontSize: 13,
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 6,
+                          boxSizing: "border-box",
+                        }}
+                      >
+                        <span>다음 등록된 공연이 없습니다</span>
+                      </div>
+                    )}
+
+                    {/* 이전 공연 (게시판 목록 기준 우측 / 과거 공연) */}
+                    {siblings.prevPost ? (
+                      <div
+                        onClick={() => navigate(`/board/${siblings.prevPost?.id}`)}
+                        className="sibling-nav-card"
+                        style={{
+                          padding: "16px 20px",
+                          borderRadius: 10,
+                          backgroundColor: "#F7FAF9",
+                          border: "1px solid rgba(0, 0, 0, 0.08)",
+                          cursor: "pointer",
+                          textAlign: "right",
+                          boxSizing: "border-box",
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "flex-end",
+                            gap: 6,
+                            fontSize: 12,
+                            color: "#8395a7",
+                            marginBottom: 6,
+                            fontWeight: 600,
+                          }}
+                        >
+                          <span>이전 공연</span>
+                          <ArrowRight size={13} />
+                        </div>
+                        <div
+                          className="sibling-title"
+                          style={{
+                            fontSize: 14.5,
+                            fontWeight: 700,
+                            color: "#05261D",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            display: "-webkit-box",
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: "vertical",
+                            wordBreak: "keep-all",
+                            overflowWrap: "break-word",
+                            lineHeight: 1.35,
+                            transition: "color 0.2s ease",
+                          }}
+                        >
+                          {siblings.prevPost.title}
+                        </div>
+                      </div>
+                    ) : (
+                      <div
+                        style={{
+                          padding: "16px 20px",
+                          borderRadius: 10,
+                          backgroundColor: "#FAFAFA",
+                          border: "1px dashed rgba(0, 0, 0, 0.08)",
+                          color: "#b2bec3",
+                          fontSize: 13,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "flex-end",
+                          gap: 6,
+                          boxSizing: "border-box",
+                        }}
+                      >
+                        <span>이전 등록된 공연이 없습니다</span>
+                      </div>
+                    )}
+                  </div>
+                </nav>
+
                 {/* 전체 목록 돌아가기 버튼 (왼쪽 콘텐츠 하단) */}
                 <div
                   style={{
-                    marginTop: 64,
-                    paddingTop: 28,
+                    marginTop: 36,
+                    paddingTop: 24,
                     borderTop: "1px solid rgba(0, 0, 0, 0.08)",
                   }}
                 >
@@ -382,8 +751,8 @@ export function BoardDetailPage() {
                       fontSize: 14,
                       fontWeight: 600,
                       cursor: "pointer",
-                      transition: "all 0.2s ease",
                       fontFamily: "Pretendard, sans-serif",
+                      transition: "all 0.2s ease",
                     }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.backgroundColor = "#F4F6F5";
@@ -448,8 +817,28 @@ export function BoardDetailPage() {
 
                   {/* CTAs under Poster */}
                   <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                    {/* 예매하기 버튼 (글 작성 시 링크가 입력되어 있을 때만 렌더링) */}
-                    {post.kakao_link && (
+                    {/* 1. 예매하기 버튼 (공연 상태에 따라 분기) */}
+                    {statusInfo.isPast ? (
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: 8,
+                          width: "100%",
+                          padding: "13px 20px",
+                          borderRadius: 8,
+                          backgroundColor: "#F1F5F9",
+                          color: "#94A3B8",
+                          fontWeight: 600,
+                          fontSize: 14.5,
+                          border: "1px solid #E2E8F0",
+                          boxSizing: "border-box",
+                        }}
+                      >
+                        <span>공연이 종료되었습니다</span>
+                      </div>
+                    ) : post.kakao_link ? (
                       <a
                         href={post.kakao_link}
                         target="_blank"
@@ -471,6 +860,7 @@ export function BoardDetailPage() {
                             ? "0 3px 10px rgba(0,0,0,0.06)"
                             : "0 4px 14px rgba(5, 38, 29, 0.16)",
                           transition: "all 0.2s ease",
+                          boxSizing: "border-box",
                         }}
                         onMouseEnter={(e) => {
                           e.currentTarget.style.transform = "translateY(-1px)";
@@ -498,9 +888,45 @@ export function BoardDetailPage() {
                           {post.kakao_link.includes("kakao") ? "카카오톡 예매 / 문의하기" : "공연 예매 / 문의하기"}
                         </span>
                       </a>
-                    )}
+                    ) : null}
 
-                    {/* 공연 링크 공유하기 버튼 */}
+                    {/* 2. 구글 캘린더에 일정 담기 버튼 */}
+                    <a
+                      href={getGoogleCalendarUrl(post)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Google Calendar에 공연 일정 등록"
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: 8,
+                        width: "100%",
+                        padding: "12px 20px",
+                        borderRadius: 8,
+                        backgroundColor: "#FFFFFF",
+                        border: "1px solid rgba(0, 0, 0, 0.12)",
+                        color: "#05261D",
+                        fontWeight: 600,
+                        fontSize: 14,
+                        textDecoration: "none",
+                        transition: "all 0.2s ease",
+                        boxSizing: "border-box",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = "#F4F6F5";
+                        e.currentTarget.style.borderColor = "#1B7A63";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = "#FFFFFF";
+                        e.currentTarget.style.borderColor = "rgba(0, 0, 0, 0.12)";
+                      }}
+                    >
+                      <CalendarPlus2 size={16} color="#1B7A63" />
+                      <span>내 캘린더에 일정 담기</span>
+                    </a>
+
+                    {/* 3. 공연 링크 공유하기 버튼 */}
                     <button
                       type="button"
                       onClick={handleShare}
@@ -519,6 +945,7 @@ export function BoardDetailPage() {
                         fontSize: 14,
                         cursor: "pointer",
                         transition: "all 0.2s ease",
+                        boxSizing: "border-box",
                       }}
                       onMouseEnter={(e) => {
                         e.currentTarget.style.backgroundColor = "#F4F6F5";

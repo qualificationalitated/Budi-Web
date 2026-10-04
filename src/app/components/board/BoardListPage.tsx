@@ -553,6 +553,8 @@ export function BoardListPage() {
                             display: "-webkit-box",
                             WebkitLineClamp: 2,
                             WebkitBoxOrient: "vertical",
+                            wordBreak: "keep-all",
+                            overflowWrap: "break-word",
                             transition: "color 0.2s ease",
                           }}
                         >
