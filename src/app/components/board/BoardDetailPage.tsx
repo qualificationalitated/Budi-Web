@@ -16,6 +16,7 @@ import {
 import {
   getPostById,
   getPostSiblings,
+  recordPostView,
   ConcertPost,
   PostSibling,
 } from "../../../lib/boardApi";
@@ -206,6 +207,8 @@ export function BoardDetailPage() {
       } else {
         setPost(data);
         setSiblings(sibs);
+        // 방문자 조회수 집계 (관리자 제외, 24시간 중복 방지)
+        recordPostView(postId);
       }
     } catch (err: any) {
       console.error("게시글 상세 로딩 실패:", err);

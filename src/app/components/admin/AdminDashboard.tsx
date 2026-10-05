@@ -136,6 +136,9 @@ export function AdminDashboard() {
     );
   }
 
+  const totalViews = posts.reduce((sum, p) => sum + (p.views || 0), 0);
+  const publishedCount = posts.filter((p) => p.is_published).length;
+
   return (
     <div
       style={{
@@ -263,9 +266,29 @@ export function AdminDashboard() {
             <h1 style={{ fontSize: 20, fontWeight: 700, color: "#0F172A", marginBottom: 4 }}>
               공연 목록
             </h1>
-            <p style={{ fontSize: 13, color: "#64748B" }}>
-              총 {posts.length}건
-            </p>
+            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8, fontSize: 13, color: "#64748B" }}>
+              <span>총 {posts.length}건 등록</span>
+              <span>•</span>
+              <span>공개 {publishedCount}건</span>
+              <span>•</span>
+              <span
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 4,
+                  color: "#0F766E",
+                  fontWeight: 600,
+                  backgroundColor: "#F0FDFA",
+                  padding: "2px 8px",
+                  borderRadius: 6,
+                  border: "1px solid #CCFBF1",
+                }}
+                title="등록된 모든 공연의 누적 조회수 합계 (24시간 중복 방지)"
+              >
+                <Eye size={13} color="#0D9488" />
+                누적 조회수 {totalViews.toLocaleString()}회
+              </span>
+            </div>
           </div>
 
           <button
@@ -412,6 +435,23 @@ export function AdminDashboard() {
                       <span style={{ display: "inline-flex", alignItems: "center", gap: 4 }}>
                         <MapPin size={12} color="#94A3B8" />
                         {post.venue}
+                      </span>
+                      <span
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: 4,
+                          color: "#0F766E",
+                          fontWeight: 500,
+                          backgroundColor: "#F0FDFA",
+                          padding: "1px 6px",
+                          borderRadius: 4,
+                          border: "1px solid #CCFBF1",
+                        }}
+                        title="관리자 전용 조회수 (24시간 중복 방지)"
+                      >
+                        <Eye size={12} color="#0D9488" />
+                        조회 {(post.views ?? 0).toLocaleString()}회
                       </span>
                     </div>
                   </div>
