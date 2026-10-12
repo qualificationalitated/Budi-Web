@@ -57,8 +57,8 @@ export function AboutSection() {
               wordBreak: "keep-all",
             }}
           >
-            공간의 품격을 완성하는 맞춤형 라이브, <br />
-            <span style={{ color: "#1B7A63" }}>수많은 찬사로 증명된 부디 앙상블의 압도적 퀄리티</span>
+            공간에 어우러지는 맞춤형 라이브 연주, <br />
+            <span style={{ color: "#1B7A63" }}>수많은 현장과 고객의 후기로 검증된 부디 앙상블</span>
           </h2>
         </div>
 
@@ -240,7 +240,7 @@ export function AboutSection() {
                 marginBottom: 24,
               }}
             >
-              2020년 창단 이래 <span style={{ color: "#1B7A63", fontWeight: 600, display: "inline-block", whiteSpace: "nowrap" }}>대형 페스티벌</span>부터 <span style={{ color: "#1B7A63", fontWeight: 600, display: "inline-block", whiteSpace: "nowrap" }}>프라이빗 웨딩</span>, <span style={{ color: "#1B7A63", fontWeight: 600, display: "inline-block", whiteSpace: "nowrap" }}>기업 VIP 행사</span>에 이르기까지 <strong style={{ color: "#05261D", fontWeight: 700, display: "inline-block", whiteSpace: "nowrap" }}>500여 회가 넘는 현장</strong>에서 청중과 호흡하며 공간에 꼭 맞는 이야기를 음악으로 완성해 왔습니다.
+              2020년 창단 이래 <span style={{ color: "#1B7A63", fontWeight: 600, display: "inline-block", whiteSpace: "nowrap" }}>대형 페스티벌</span>부터 <span style={{ color: "#1B7A63", fontWeight: 600, display: "inline-block", whiteSpace: "nowrap" }}>웨딩</span>, <span style={{ color: "#1B7A63", fontWeight: 600, display: "inline-block", whiteSpace: "nowrap" }}>기업 VIP 행사</span>에 이르기까지 <strong style={{ color: "#05261D", fontWeight: 700, display: "inline-block", whiteSpace: "nowrap" }}>500여 회 이상의 무대</strong>에 올랐습니다. 다양한 현장에서 쌓아온 탄탄한 실적과 무대 경험을 바탕으로, 어떤 환경에서도 안정적이고 완성도 높은 연주를 선보입니다.
             </p>
 
             {/* Paragraph 3 */}
@@ -256,7 +256,7 @@ export function AboutSection() {
                 marginBottom: 38,
               }}
             >
-              클래식의 문턱을 낮추는 친근한 해설과 분위기를 채우는 맞춤형 선율로, <strong style={{ color: "#05261D", fontWeight: 700, display: "inline-block", whiteSpace: "nowrap" }}>6명의 전문 연주자와 작곡가</strong>가 오직 당신만을 위한 프로페셔널한 음악 경험을 선사합니다.
+              관객과의 거리를 좁히는 <strong style={{ color: "#05261D", fontWeight: 700 }}>친근한 해설</strong>과 함께, <span style={{ color: "#1B7A63", fontWeight: 600 }}>전문 연주자와 작곡가 6인</span>이 직접 무대를 만듭니다. 기존 레퍼토리에 머물지 않고 <strong style={{ color: "#05261D", fontWeight: 700 }}>고객 요청에 맞춘 전문 편곡</strong>을 제공하여, 행사의 콘셉트와 공간에 가장 어울리는 무대를 완성합니다.
             </p>
 
             {/* [Minimal Inline Stats] 매거진 인라인 스탯 3종 */}

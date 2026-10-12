@@ -67,12 +67,12 @@ export function Footer() {
                 fontSize: 14,
                 color: "rgba(255,255,255,0.5)",
                 lineHeight: 1.8,
-                maxWidth: 300,
+                maxWidth: 320,
                 marginBottom: 24,
               }}
             >
-              부디(Budi) 앙상블은 2020년 만들어진 전문 피아노 & 현악 앙상블로서 <br />
-              듣는 모든 분들의 행복을 바라는 마음을 담아, 아름다운 이야기를 연주해 나갑니다.
+              부디 앙상블은 2020년 창단된 피아노·현악 실내악단입니다. <br />
+              클래식부터 대중적인 곡까지, 공간에 어울리는 라이브 연주를 선보입니다.
             </p>
             <div style={{ display: "flex", gap: 12 }}>
               {[

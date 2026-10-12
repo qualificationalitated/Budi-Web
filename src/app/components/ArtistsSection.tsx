@@ -116,7 +116,7 @@ export function ArtistsSection() {
               lineHeight: 1.7,
             }}
           >
-            6명의 전문 아티스트들이 어우러져 깊고 아름다운 선율을 빚어냅니다.
+            바이올린, 비올라, 첼로, 피아노 연주자와 작곡가 6인이 함께합니다.
           </p>
         </div>
 

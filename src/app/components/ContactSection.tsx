@@ -74,7 +74,7 @@ export function ContactSection() {
               margin: "0 auto",
             }}
           >
-            행사 규모나 예산 걱정 없이, 언제든 편하게 문의해 주세요
+            행사 일정과 장소, 원하시는 구성을 편하게 남겨주세요.
           </p>
         </div>
 
