@@ -71,11 +71,13 @@ export default async function handler(req, res) {
     .sort()
     .pop();
 
+  const todayDate = new Date().toISOString().slice(0, 10);
+
   const entries = [
-    urlEntry({ loc: `${SITE_URL}/`, lastmod: "2026-09-20", changefreq: "weekly", priority: "1.0" }),
+    urlEntry({ loc: `${SITE_URL}/`, lastmod: todayDate, changefreq: "weekly", priority: "1.0" }),
     urlEntry({
       loc: `${SITE_URL}/board`,
-      lastmod: latestPostDate || "2026-09-20",
+      lastmod: latestPostDate || todayDate,
       changefreq: "daily",
       priority: "0.9",
     }),
