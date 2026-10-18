@@ -1,8 +1,10 @@
 import { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router";
-import { MapPin, Calendar, Music2, Loader2, ArrowRight } from "lucide-react";
+import { MapPin, Calendar, Music2, Loader2, ChevronDown } from "lucide-react";
 import { getPublishedPosts, ConcertPost, getConcertTimestamp } from "../../../lib/boardApi";
 import { Footer } from "../Footer";
+
+const PAGE_SIZE = 16;
 
 interface ParsedDate {
   year: string;
@@ -43,6 +45,7 @@ export function BoardListPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedYear, setSelectedYear] = useState<string>("ALL");
+  const [visibleCount, setVisibleCount] = useState<number>(PAGE_SIZE);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -73,11 +76,39 @@ export function BoardListPage() {
     }
   }
 
-  // ─── 연도별(2026, 2025...) 그룹핑 및 정렬 ───
-  const yearlyGroups = useMemo(() => {
+  // 1. 등록된 고유 연도 목록 (2026, 2025...) - 전체 posts 기준 계산
+  const availableYears = useMemo(() => {
+    const yearsSet = new Set<string>();
+    posts.forEach((post) => {
+      const parsed = parseConcertDate(post.concert_date, post.created_at);
+      yearsSet.add(parsed.year || "2026");
+    });
+    return Array.from(yearsSet).sort((a, b) => b.localeCompare(a));
+  }, [posts]);
+
+  // 2. 선택된 연도 탭에 해당하는 전체 포스트 (최신 연주 날짜순)
+  const currentFilteredPosts = useMemo(() => {
+    const sorted = [...posts].sort((a, b) => getConcertTimestamp(b) - getConcertTimestamp(a));
+    if (selectedYear === "ALL") return sorted;
+    return sorted.filter((post) => {
+      const parsed = parseConcertDate(post.concert_date, post.created_at);
+      return (parsed.year || "2026") === selectedYear;
+    });
+  }, [posts, selectedYear]);
+
+  // 3. 더보기(16개 단위)에 의해 현재 화면에 노출될 포스트 슬라이스
+  const visiblePosts = useMemo(() => {
+    return currentFilteredPosts.slice(0, visibleCount);
+  }, [currentFilteredPosts, visibleCount]);
+
+  // 더 볼 공연이 남아있는지 여부 (전체 개수는 화면에 표시하지 않음)
+  const hasMore = visibleCount < currentFilteredPosts.length;
+
+  // 4. visiblePosts를 연도별로 그룹핑하여 섹션 렌더링
+  const displayedGroups = useMemo(() => {
     const map = new Map<string, ConcertPost[]>();
 
-    posts.forEach((post) => {
+    visiblePosts.forEach((post) => {
       const parsed = parseConcertDate(post.concert_date, post.created_at);
       const yearKey = parsed.year || "2026";
       if (!map.has(yearKey)) {
@@ -92,18 +123,16 @@ export function BoardListPage() {
       year,
       items: map.get(year)!.sort((a, b) => getConcertTimestamp(b) - getConcertTimestamp(a)),
     }));
-  }, [posts]);
+  }, [visiblePosts]);
 
-  // 등록된 고유 연도 목록 (2026, 2025...)
-  const availableYears = useMemo(() => {
-    return yearlyGroups.map((g) => g.year);
-  }, [yearlyGroups]);
+  const handleYearChange = (year: string) => {
+    setSelectedYear(year);
+    setVisibleCount(PAGE_SIZE);
+  };
 
-  // 선택된 탭에 따라 필터링된 연도 그룹 목록
-  const displayedGroups = useMemo(() => {
-    if (selectedYear === "ALL") return yearlyGroups;
-    return yearlyGroups.filter((g) => g.year === selectedYear);
-  }, [yearlyGroups, selectedYear]);
+  const handleLoadMore = () => {
+    setVisibleCount((prev) => prev + PAGE_SIZE);
+  };
 
   return (
     <div
@@ -208,6 +237,39 @@ export function BoardListPage() {
             row-gap: 32px !important;
           }
         }
+
+        .load-more-btn {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          padding: 13px 36px;
+          border-radius: 9999px;
+          background-color: #FFFFFF;
+          border: 1.5px solid #05261D;
+          color: #05261D;
+          font-family: 'Pretendard', -apple-system, sans-serif;
+          font-size: 15px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+          box-shadow: 0 2px 10px rgba(5, 38, 29, 0.05);
+        }
+        .load-more-btn:hover {
+          background-color: #05261D;
+          color: #FFFFFF;
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(5, 38, 29, 0.16);
+        }
+        .load-more-btn:hover svg {
+          transform: translateY(2px);
+        }
+        .load-more-btn svg {
+          transition: transform 0.2s ease;
+        }
+        .load-more-btn:active {
+          transform: translateY(0);
+        }
       `}</style>
 
       {/* ─── Page Header (메인 페이지 시그니처와 100% 통일) ─── */}
@@ -306,7 +368,7 @@ export function BoardListPage() {
             {/* 전체 탭 */}
             <button
               type="button"
-              onClick={() => setSelectedYear("ALL")}
+              onClick={() => handleYearChange("ALL")}
               className={`year-tab-btn ${selectedYear === "ALL" ? "active" : ""}`}
               style={{
                 fontFamily: "Pretendard, sans-serif",
@@ -333,7 +395,7 @@ export function BoardListPage() {
                 <button
                   key={year}
                   type="button"
-                  onClick={() => setSelectedYear(year)}
+                  onClick={() => handleYearChange(year)}
                   className={`year-tab-btn ${isActive ? "active" : ""}`}
                   style={{
                     fontFamily: "Pretendard, sans-serif",
@@ -630,6 +692,20 @@ export function BoardListPage() {
             </section>
           ))}
         </div>
+        )}
+
+        {/* ─── Load More Button (16개씩 더보기, 전체 개수 미노출) ─── */}
+        {!loading && !error && hasMore && (
+          <div style={{ textAlign: "center", marginTop: 52, marginBottom: 12 }}>
+            <button
+              type="button"
+              onClick={handleLoadMore}
+              className="load-more-btn"
+            >
+              <span>공연 일정 더보기</span>
+              <ChevronDown size={18} />
+            </button>
+          </div>
         )}
       </main>
 
