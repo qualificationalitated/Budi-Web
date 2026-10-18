@@ -118,6 +118,8 @@ export function BoardListPage() {
     >
       <style>{`
         .seoulphil-card {
+          min-width: 0;
+          width: 100%;
           cursor: pointer;
           transition: transform 0.25s ease;
         }
@@ -167,14 +169,14 @@ export function BoardListPage() {
 
         .seoulphil-grid {
           display: grid;
-          grid-template-columns: repeat(4, 1fr);
+          grid-template-columns: repeat(4, minmax(0, 1fr));
           column-gap: 22px;
           row-gap: 48px;
         }
 
         @media (max-width: 1200px) {
           .seoulphil-grid {
-            grid-template-columns: repeat(3, 1fr) !important;
+            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
             column-gap: 20px !important;
           }
         }
@@ -194,7 +196,7 @@ export function BoardListPage() {
 
         @media (max-width: 768px) {
           .seoulphil-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
             column-gap: 16px !important;
             row-gap: 36px !important;
           }
@@ -202,7 +204,7 @@ export function BoardListPage() {
 
         @media (max-width: 440px) {
           .seoulphil-grid {
-            grid-template-columns: 1fr !important;
+            grid-template-columns: minmax(0, 1fr) !important;
             row-gap: 32px !important;
           }
         }
@@ -551,19 +553,19 @@ export function BoardListPage() {
                           className="card-title"
                           style={{
                             fontFamily: "Pretendard, sans-serif",
-                            fontSize: "clamp(21px, 1.4vw, 25px)",
+                            fontSize: "clamp(20px, 1.3vw, 24px)",
                             fontWeight: 800,
                             lineHeight: 1.32,
                             color: "#05261D",
                             letterSpacing: "-0.5px",
-                            margin: "0 0 5px 0",
+                            margin: "0 0 6px 0",
                             overflow: "hidden",
                             textOverflow: "ellipsis",
                             display: "-webkit-box",
                             WebkitLineClamp: 2,
                             WebkitBoxOrient: "vertical",
-                            wordBreak: "keep-all",
-                            overflowWrap: "break-word",
+                            wordBreak: "break-all",
+                            overflowWrap: "anywhere",
                             transition: "color 0.2s ease",
                           }}
                         >
@@ -579,13 +581,18 @@ export function BoardListPage() {
                             fontSize: 13.5,
                             color: "#636e72",
                             marginBottom: 4,
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            whiteSpace: "nowrap",
+                            minWidth: 0,
                           }}
                         >
                           <MapPin size={14} style={{ color: "#1B7A63", flexShrink: 0 }} />
-                          <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                          <span
+                            style={{
+                              minWidth: 0,
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                            }}
+                          >
                             {post.venue}
                           </span>
                         </div>
@@ -600,13 +607,18 @@ export function BoardListPage() {
                             color: "#1B7A63",
                             fontWeight: 600,
                             letterSpacing: "-0.2px",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            whiteSpace: "nowrap",
+                            minWidth: 0,
                           }}
                         >
                           <Calendar size={14} style={{ flexShrink: 0 }} />
-                          <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                          <span
+                            style={{
+                              minWidth: 0,
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                            }}
+                          >
                             {dateInfo.formatted}
                           </span>
                         </div>
