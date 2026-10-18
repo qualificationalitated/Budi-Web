@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router";
 import { MapPin, Calendar, Music2, Loader2, ArrowRight } from "lucide-react";
-import { getPublishedPosts, ConcertPost } from "../../../lib/boardApi";
+import { getPublishedPosts, ConcertPost, getConcertTimestamp } from "../../../lib/boardApi";
 import { Footer } from "../Footer";
 
 interface ParsedDate {
@@ -90,7 +90,7 @@ export function BoardListPage() {
 
     return sortedYears.map((year) => ({
       year,
-      items: map.get(year)!,
+      items: map.get(year)!.sort((a, b) => getConcertTimestamp(b) - getConcertTimestamp(a)),
     }));
   }, [posts]);
 

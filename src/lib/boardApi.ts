@@ -9,6 +9,11 @@ export interface ConcertPost {
   content: string;
   poster_url: string | null;
   kakao_link: string | null;
+  category?: string;
+  visibility?: string;
+  client_name?: string | null;
+  client_type?: string | null;
+  start_time?: string | null;
   is_published: boolean;
   author_email: string;
   views?: number;
@@ -19,16 +24,46 @@ export interface ConcertPost {
 export type ConcertPostInsert = Omit<ConcertPost, "id" | "created_at" | "updated_at">;
 export type ConcertPostUpdate = Partial<Omit<ConcertPost, "id" | "created_at" | "updated_at">>;
 
-// ─── 방문자용: 공개 게시글 조회 ─────────────────────────────
+// ─── 헬퍼: 공연 일시 기반 타임스탬프 추출 (연주 날짜 최신순 정렬용) ───
+export function getConcertTimestamp(post: {
+  concert_date?: string;
+  start_time?: string | null;
+  created_at?: string;
+}): number {
+  if (post.start_time) {
+    const t = new Date(post.start_time).getTime();
+    if (!isNaN(t)) return t;
+  }
+  if (post.concert_date) {
+    const match = post.concert_date.match(/(\d{4})[.-](\d{1,2})[.-](\d{1,2})/);
+    if (match) {
+      const year = parseInt(match[1], 10);
+      const month = parseInt(match[2], 10) - 1;
+      const day = parseInt(match[3], 10);
+      const timeMatch = post.concert_date.match(/(\d{1,2}):(\d{2})/);
+      const hour = timeMatch ? parseInt(timeMatch[1], 10) : 0;
+      const minute = timeMatch ? parseInt(timeMatch[2], 10) : 0;
+      const d = new Date(year, month, day, hour, minute);
+      if (!isNaN(d.getTime())) return d.getTime();
+    }
+  }
+  if (post.created_at) {
+    const t = new Date(post.created_at).getTime();
+    if (!isNaN(t)) return t;
+  }
+  return 0;
+}
+
+// ─── 방문자용: 공개 게시글 조회 (연주 날짜 최신순 정렬) ─────────────
 export async function getPublishedPosts(): Promise<ConcertPost[]> {
   const { data, error } = await supabase
     .from("concert_posts")
     .select("*")
-    .eq("is_published", true)
-    .order("created_at", { ascending: false });
+    .eq("is_published", true);
 
   if (error) throw error;
-  return data ?? [];
+  const list = (data ?? []) as ConcertPost[];
+  return list.sort((a, b) => getConcertTimestamp(b) - getConcertTimestamp(a));
 }
 
 export async function getPostById(id: string): Promise<ConcertPost | null> {
@@ -57,32 +92,33 @@ export async function getPostSiblings(
 ): Promise<{ prevPost: PostSibling | null; nextPost: PostSibling | null }> {
   const { data, error } = await supabase
     .from("concert_posts")
-    .select("id, title, concert_date, created_at")
-    .eq("is_published", true)
-    .order("created_at", { ascending: false });
+    .select("id, title, concert_date, created_at, start_time")
+    .eq("is_published", true);
 
   if (error || !data) return { prevPost: null, nextPost: null };
 
-  const currentIndex = data.findIndex((p) => p.id === currentPostId);
+  // 연주 날짜 기준 내림차순(최신순) 정렬: 최신 공연(0번) -> 과거 공연(끝번)
+  const sorted = [...data].sort((a, b) => getConcertTimestamp(b) - getConcertTimestamp(a));
+  const currentIndex = sorted.findIndex((p) => p.id === currentPostId);
   if (currentIndex === -1) return { prevPost: null, nextPost: null };
 
-  // 게시판 목록 기준: 최신글(좌측, currentIndex - 1)은 다음 공연, 과거글(우측, currentIndex + 1)은 이전 공연
+  // 게시판 목록 기준: 최신글(좌측, currentIndex - 1)은 다음 공연(더 최신), 과거글(우측, currentIndex + 1)은 이전 공연(더 과거)
   const nextPost =
     currentIndex > 0
       ? {
-          id: data[currentIndex - 1].id,
-          title: data[currentIndex - 1].title,
-          concert_date: data[currentIndex - 1].concert_date,
-        }
+        id: sorted[currentIndex - 1].id,
+        title: sorted[currentIndex - 1].title,
+        concert_date: sorted[currentIndex - 1].concert_date,
+      }
       : null;
 
   const prevPost =
-    currentIndex < data.length - 1
+    currentIndex < sorted.length - 1
       ? {
-          id: data[currentIndex + 1].id,
-          title: data[currentIndex + 1].title,
-          concert_date: data[currentIndex + 1].concert_date,
-        }
+        id: sorted[currentIndex + 1].id,
+        title: sorted[currentIndex + 1].title,
+        concert_date: sorted[currentIndex + 1].concert_date,
+      }
       : null;
 
   return { prevPost, nextPost };
@@ -92,11 +128,11 @@ export async function getPostSiblings(
 export async function getAllPosts(): Promise<ConcertPost[]> {
   const { data, error } = await supabase
     .from("concert_posts")
-    .select("*")
-    .order("created_at", { ascending: false });
+    .select("*");
 
   if (error) throw error;
-  return data ?? [];
+  const list = (data ?? []) as ConcertPost[];
+  return list.sort((a, b) => getConcertTimestamp(b) - getConcertTimestamp(a));
 }
 
 export async function createPost(post: ConcertPostInsert): Promise<ConcertPost> {
